@@ -258,6 +258,19 @@
     @media(max-width:600px){
       .stat-bar { grid-template-columns: repeat(3,1fr); }
       .today-grid { grid-template-columns: 1fr; }
+      .content { padding: 16px 12px; }
+      .p-table th, .p-table td { padding: 8px 8px; font-size: 0.75rem; }
+      /* 참가자 테이블 일부 컬럼 숨기기 */
+      .p-table th:nth-child(4), .p-table td:nth-child(4),
+      .p-table th:nth-child(6), .p-table td:nth-child(6),
+      .p-table th:nth-child(7), .p-table td:nth-child(7) { display: none; }
+      .adm-head { flex-wrap: wrap; gap: 6px; }
+      header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      /* HOF 폼 그리드 1열로 */
+      #hof-form-grid { grid-template-columns: 1fr !important; }
+      .lock-box { width: 100%; }
+      #lock-pw { width: 100%; }
+      .stat-val { font-size: 1.3rem; }
     }
   </style>
 </head>

@@ -14,7 +14,7 @@ const HEADERS = {
   participants: ['nickname','blogUrl','startLevel','registeredAt'],
   submissions:  ['nickname','level','postTitle','postLink','todayComments',
                  'yesterdayViews','inquiry','revenue','revenueAmt','memo','submittedAt'],
-  hof:          ['name','review','storyUrl','totalViews','inquiry','addedAt'],
+  hof:          ['name','review','storyUrl','blogUrl','totalViews','inquiry','imgUrl','addedAt'],
 };
 
 // ── 시트 가져오기 (없으면 생성) ────────────────────────────────
@@ -137,6 +137,10 @@ function doPost(e) {
     const data   = e.parameter.data ? JSON.parse(e.parameter.data) : {};
 
     if (action === 'saveParticipant') {
+      // 참가 코드 서버 검증
+      if (data.accessCode !== '0000') {
+        return corsOutput({ status: 'error', message: '참가 코드가 올바르지 않습니다.' });
+      }
       upsertRow('participants', data, 'nickname');
       return corsOutput({ status: 'ok' });
     }
@@ -147,13 +151,14 @@ function doPost(e) {
     }
 
     if (action === 'saveHof') {
-      // name 필드 기준으로 upsert (이미지는 시트에 저장 안 함)
       const hofData = {
         name:       data.name       || '',
         review:     data.review     || '',
         storyUrl:   data.storyUrl   || '',
+        blogUrl:    data.blogUrl    || '',
         totalViews: data.totalViews || '',
         inquiry:    data.inquiry    || 'X',
+        imgUrl:     data.imgUrl     || '',
         addedAt:    data.addedAt    || new Date().toISOString(),
       };
       upsertRow('hof', hofData, 'name');

@@ -61,13 +61,8 @@ const DB = {
             blogUrl:    entry.blogUrl    || '',
             inquiry:    entry.inquiry    || 'X',
             totalViews: entry.totalViews || '',
-            imgUrl:     '',   // 이미지는 시트에 저장 안 함 (용량)
+            imgUrl:     entry.imgUrl     || '',
           };
-        });
-        // 기존 로컬 HOF의 이미지는 유지
-        const localHof = this.getHofData();
-        Object.keys(hofMap).forEach(name => {
-          if (localHof[name]?.imgUrl) hofMap[name].imgUrl = localHof[name].imgUrl;
         });
         localStorage.setItem('hof', JSON.stringify(hofMap));
       }
@@ -136,12 +131,11 @@ const DB = {
     hof[name] = entry;
     localStorage.setItem('hof', JSON.stringify(hof));
 
-    // 시트에는 이미지 제외하고 저장
+    // 시트에 이미지 포함해서 저장
     this._post('saveHof', {
       name,
       addedAt: new Date().toISOString(),
       ...entry,
-      imgUrl: '',
     });
   },
 

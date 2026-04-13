@@ -451,6 +451,16 @@
       color: var(--dim);
     }
 
+    /* ══ 토스트 알림 ══ */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #2a1a1a; border: 1px solid var(--red);
+      color: var(--mid); font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 1px; padding: 10px 20px;
+      opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 999;
+    }
+    .toast.show { opacity: 1; }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(5px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -614,6 +624,7 @@
 <!-- 모바일 전용 플로팅 제출 버튼 -->
 <a href="daily.html" class="fab-submit" title="오늘 제출">오늘<br>제출</a>
 
+<div class="toast" id="toast"></div>
 <script src="data.js"></script>
 <script>
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -876,14 +887,27 @@ async function main(){
     try {
       const ok = await DB.pullFromSheets();
       if(ok) renderFromLocal();
-      else if(!hasLocal) render(SAMPLE); // 시트도 실패하면 샘플
+      else {
+        if(!hasLocal) render(SAMPLE);
+        showToast('⚠ 구글 시트 동기화 실패 — 로컬 데이터로 표시 중');
+      }
     } catch(e){
       if(!hasLocal) render(SAMPLE);
+      showToast('⚠ 구글 시트 연결 오류');
     }
   } else {
     // 시트 미연동: 로컬 있으면 표시, 없으면 샘플
     if(!hasLocal) render(SAMPLE);
   }
+}
+
+let _toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
 }
 
 function togglePosts(uid, btn) {
