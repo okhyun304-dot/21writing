@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>기수 종료 리포트 — 21일 글쓰기</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #080809;
+      --panel:  #101012;
+      --panel2: #161618;
+      --line:   #252528;
+      --line2:  #303035;
+      --dim:    #72727c;
+      --mid:    #a8a8b4;
+      --light:  #d4d4de;
+      --white:  #f2f2f6;
+      --brass:  #b88818;
+      --brass2: #e0aa28;
+      --mono: 'Share Tech Mono', monospace;
+      --impact: 'Bebas Neue', 'Noto Sans KR', sans-serif;
+      --body: 'Noto Sans KR', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--light); font-family: var(--body); min-height: 100vh; padding-bottom: 64px; }
+
+    header {
+      background: var(--panel); border-bottom: 1px solid var(--line2);
+      padding: 18px 24px; display: flex; align-items: center; justify-content: space-between;
+    }
+    header h1 { font-family: var(--impact); font-size: 1.4rem; letter-spacing: 3px; color: var(--white); }
+    header h1 span { color: var(--brass2); }
+    .nav-link { font-family: var(--mono); font-size: 0.65rem; color: var(--dim); text-decoration: none; letter-spacing: 2px; }
+    .nav-link:hover { color: var(--brass2); }
+
+    .container { max-width: 640px; margin: 40px auto; padding: 0 16px; }
+    .page-title { font-family: var(--impact); font-size: 2rem; letter-spacing: 3px; color: var(--white); margin-bottom: 4px; }
+    .page-sub { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 2px; color: var(--dim); margin-bottom: 32px; }
+
+    /* 리포트 유형 선택 */
+    .type-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line2); margin-bottom: 32px; }
+    .type-card {
+      background: var(--panel); padding: 20px 18px; cursor: pointer;
+      border-top: 2px solid transparent; transition: all .15s;
+    }
+    .type-card.active { border-top-color: var(--brass); background: var(--panel2); }
+    .type-card input { display: none; }
+    .type-card .t-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .type-card .t-name { font-family: var(--impact); font-size: 1rem; letter-spacing: 2px; color: var(--mid); margin-bottom: 4px; }
+    .type-card.active .t-name { color: var(--white); }
+    .type-card .t-desc { font-size: 0.75rem; color: var(--dim); line-height: 1.5; }
+
+    .divider { display: flex; align-items: center; gap: 10px; margin: 28px 0 20px; }
+    .divider-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 3px; color: var(--dim); white-space: nowrap; text-transform: uppercase; }
+    .divider-line { flex: 1; height: 1px; background: var(--line); }
+
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--light); margin-bottom: 7px; }
+    .field label .req { color: var(--brass2); margin-left: 2px; }
+    .field label .hint { font-weight: 400; font-size: 0.72rem; color: var(--dim); margin-left: 6px; }
+    .field .placeholder-hint {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--dim);
+      margin-top: 6px;
+      line-height: 1.6;
+      padding: 8px 12px;
+      background: var(--panel2);
+      border-left: 2px solid var(--line2);
+    }
+
+    input[type=text], input[type=number], select, textarea {
+      width: 100%;
+      background: var(--panel);
+      border: 1px solid var(--line2);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 0.9rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color .15s;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--brass); }
+    textarea { resize: vertical; min-height: 110px; line-height: 1.7; }
+    select option { background: var(--panel2); }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+    /* 파일 업로드 */
+    .file-area {
+      border: 1px dashed var(--line2);
+      background: var(--panel);
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .15s;
+    }
+    .file-area:hover { border-color: var(--brass); }
+    .file-area input { display: none; }
+    .file-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .file-text { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 2px; color: var(--dim); }
+    .file-list { margin-top: 8px; font-size: 0.75rem; color: var(--mid); }
+
+    /* 성과 vs 실패 조건부 */
+    .section-success, .section-failure { display: none; }
+    .section-success.show, .section-failure.show { display: block; }
+
+    .submit-btn {
+      width: 100%; padding: 15px;
+      background: var(--brass); color: var(--bg);
+      font-family: var(--impact); font-size: 1.1rem; letter-spacing: 3px;
+      border: none; cursor: pointer; transition: background .15s; margin-top: 32px;
+    }
+    .submit-btn:hover { background: var(--brass2); }
+
+    #done { display: none; text-align: center; padding: 60px 20px; }
+    #done .done-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    #done h2 { font-family: var(--impact); font-size: 1.8rem; letter-spacing: 3px; color: var(--white); margin-bottom: 8px; }
+    #done p { font-size: 0.85rem; color: var(--dim); line-height: 1.7; }
+    #done a { display: inline-block; margin-top: 24px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 2px; color: var(--brass2); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1><span>21</span>일 글쓰기</h1>
+  <a class="nav-link" href="index.html">← 대시보드</a>
+</header>
+
+<div class="container">
+  <div class="page-title">기수 종료 리포트</div>
+  <div class="page-sub">21일 종료 후 2~3일 내 제출 · 미제출 시 보증금 몰수 + 다음 기수 참여 불가</div>
+
+  <form id="report-form">
+
+    <!-- 리포트 유형 -->
+    <div class="type-selector" id="type-selector">
+      <label class="type-card" id="card-success">
+        <input type="radio" name="reportType" value="성과" required />
+        <div class="t-icon">📈</div>
+        <div class="t-name">성과 리포트</div>
+        <div class="t-desc">KPI를 달성했거나<br>유의미한 결과가 나온 경우</div>
+      </label>
+      <label class="type-card" id="card-failure">
+        <input type="radio" name="reportType" value="실패" />
+        <div class="t-icon">📉</div>
+        <div class="t-name">실패 리포트</div>
+        <div class="t-desc">KPI에 미달했거나<br>예상과 다른 결과가 나온 경우</div>
+      </label>
+    </div>
+
+    <!-- 기본 정보 -->
+    <div class="divider"><span class="divider-label">기본 정보</span><div class="divider-line"></div></div>
+
+    <div class="field">
+      <label>닉네임<span class="req">*</span></label>
+      <input type="text" name="nickname" required placeholder="등록 시 사용한 닉네임" />
+    </div>
+
+    <div class="grid2">
+      <div class="field">
+        <label>기수<span class="req">*</span></label>
+        <select name="cohort" required>
+          <option value="">선택</option>
+          <option value="1">1기</option>
+          <option value="2">2기</option>
+          <option value="3">3기</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>최종 레벨<span class="req">*</span></label>
+        <select name="finalLevel" required>
+          <option value="">선택</option>
+          <option value="브론즈">🥉 브론즈</option>
+          <option value="실버">🥈 실버</option>
+          <option value="골드">🥇 골드</option>
+          <option value="명예의전당">👑 명예의전당</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 최종 수치 -->
+    <div class="divider"><span class="divider-label">최종 수치</span><div class="divider-line"></div></div>
+
+    <div class="grid3">
+      <div class="field">
+        <label>총 발행 글 수</label>
+        <input type="number" name="totalPosts" placeholder="0" min="0" max="21" />
+      </div>
+      <div class="field">
+        <label>21일 총 조회수</label>
+        <input type="number" name="totalViews" placeholder="0" min="0" />
+      </div>
+      <div class="field">
+        <label>최대 하루 방문자</label>
+        <input type="number" name="maxVisitors" placeholder="0" min="0" />
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="field">
+        <label>문의 발생 건수</label>
+        <input type="number" name="inquiryCount" placeholder="0" min="0" />
+      </div>
+      <div class="field">
+        <label>21일 총 매출 (원)</label>
+        <input type="number" name="totalRevenue" placeholder="0" min="0" />
+      </div>
+    </div>
+
+    <!-- 성과 리포트 서사 -->
+    <div class="section-success" id="section-success">
+      <div class="divider"><span class="divider-label">성과 분석</span><div class="divider-line"></div></div>
+
+      <div class="field">
+        <label>무엇을 시도했는가<span class="req">*</span></label>
+        <textarea name="whatTried" placeholder="어떤 전략, 글 형식, 키워드, 방식을 시도했는지 구체적으로 작성하세요."></textarea>
+        <div class="placeholder-hint">예: 제목에 숫자를 넣는 방식 / 질문형 제목 / 문제 해결형 구조로 바꿨다</div>
+      </div>
+
+      <div class="field">
+        <label>어떤 수치가 나왔는가<span class="req">*</span></label>
+        <textarea name="whatResults" placeholder="구체적인 수치 중심으로 작성하세요."></textarea>
+        <div class="placeholder-hint">예: 17일차에 방문자 340명 / 조회수 1,500 달성 / 문의 2건 → 계약 1건</div>
+      </div>
+
+      <div class="field">
+        <label>다음 기수에서 무엇을 조정할 것인가<span class="req">*</span></label>
+        <textarea name="whatNext" placeholder="더 잘 됐을 것 같은 부분, 보완할 점을 작성하세요."></textarea>
+      </div>
+    </div>
+
+    <!-- 실패 리포트 서사 -->
+    <div class="section-failure" id="section-failure">
+      <div class="divider"><span class="divider-label">실패 분석</span><div class="divider-line"></div></div>
+
+      <div class="field">
+        <label>어떤 가설을 세웠는가<span class="req">*</span></label>
+        <textarea name="hypothesis" placeholder="시작할 때 '이렇게 하면 될 것이다'라고 생각했던 것을 작성하세요."></textarea>
+        <div class="placeholder-hint">예: 매일 쓰면 조회수가 올라갈 것이다 / 질문형 제목이 클릭을 유도할 것이다</div>
+      </div>
+
+      <div class="field">
+        <label>실제 수치는 어떻게 나왔는가<span class="req">*</span></label>
+        <textarea name="actualResults" placeholder="예상과 다르게 나온 수치를 작성하세요."></textarea>
+      </div>
+
+      <div class="field">
+        <label>원인은 무엇이라고 생각하는가<span class="req">*</span></label>
+        <textarea name="rootCause" placeholder="왜 가설이 틀렸는지, 무엇이 문제였는지 분석하세요."></textarea>
+      </div>
+    </div>
+
+    <!-- 통계 캡처 첨부 -->
+    <div class="divider"><span class="divider-label">통계 캡처 첨부</span><div class="divider-line"></div></div>
+
+    <div class="field">
+      <label>블로그 통계 화면 캡처<span class="req">*</span><span class="hint">네이버 블로그 통계 화면 필수</span></label>
+      <label class="file-area" id="file-area">
+        <input type="file" name="statsCapture" accept="image/*" multiple />
+        <div class="file-icon">📎</div>
+        <div class="file-text">클릭하여 파일 선택 · 여러 장 가능</div>
+        <div class="file-list" id="file-list"></div>
+      </label>
+    </div>
+
+    <button type="submit" class="submit-btn">리포트 제출</button>
+  </form>
+
+  <div id="done">
+    <div class="done-icon">✓</div>
+    <h2>리포트 제출 완료</h2>
+    <p>수고했습니다.<br>운영진이 확인 후 레벨 심사를 진행합니다.</p>
+    <a href="index.html">대시보드에서 확인하기 →</a>
+  </div>
+</div>
+
+<script>
+  // 리포트 유형 선택
+  document.querySelectorAll('input[name="reportType"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('card-success').classList.toggle('active', r.value==='성과');
+      document.getElementById('card-failure').classList.toggle('active', r.value==='실패');
+      document.getElementById('section-success').classList.toggle('show', r.value==='성과');
+      document.getElementById('section-failure').classList.toggle('show', r.value==='실패');
+    });
+  });
+
+  document.querySelectorAll('.type-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const input = card.querySelector('input');
+      input.checked = true;
+      input.dispatchEvent(new Event('change', {bubbles:true}));
+    });
+  });
+
+  // 파일 선택 표시
+  document.querySelector('input[name="statsCapture"]').addEventListener('change', function(){
+    const list = document.getElementById('file-list');
+    list.textContent = [...this.files].map(f=>f.name).join(', ');
+  });
+
+  // 제출
+  document.getElementById('report-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+    console.log('리포트 데이터:', data);
+    // TODO: 구글 시트 연동
+    document.getElementById('report-form').style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+  });
+</script>
+</body>
+</html>

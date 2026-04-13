@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>참가자 등록 — 21일 글쓰기</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #080809;
+      --panel:  #101012;
+      --panel2: #161618;
+      --line:   #252528;
+      --line2:  #303035;
+      --dim:    #72727c;
+      --mid:    #a8a8b4;
+      --light:  #d4d4de;
+      --white:  #f2f2f6;
+      --brass:  #b88818;
+      --brass2: #e0aa28;
+      --red:    #c04040;
+      --mono: 'Share Tech Mono', monospace;
+      --impact: 'Bebas Neue', 'Noto Sans KR', sans-serif;
+      --body: 'Noto Sans KR', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--light);
+      font-family: var(--body);
+      min-height: 100vh;
+      padding-bottom: 64px;
+    }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--line2);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-family: var(--impact); font-size: 1.4rem; letter-spacing: 3px; color: var(--white); }
+  header h1 a { text-decoration: none; color: inherit; }
+    header h1 span { color: var(--brass2); }
+    .nav-link { font-family: var(--mono); font-size: 0.65rem; color: var(--dim); text-decoration: none; letter-spacing: 2px; }
+    .nav-link:hover { color: var(--brass2); }
+
+    .container { max-width: 600px; margin: 40px auto; padding: 0 16px; }
+    .page-title { font-family: var(--impact); font-size: 2rem; letter-spacing: 3px; color: var(--white); margin-bottom: 4px; }
+    .page-sub { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 2px; color: var(--dim); margin-bottom: 32px; }
+
+    /* 기수 배너 */
+    .cohort-banner {
+      background: var(--panel);
+      border-left: 3px solid var(--brass);
+      padding: 14px 18px;
+      margin-bottom: 28px;
+    }
+    .cohort-banner .c-num {
+      font-family: var(--impact);
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: var(--brass2);
+      margin-bottom: 2px;
+    }
+    .cohort-banner .c-period {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--dim);
+      letter-spacing: 1px;
+    }
+    .cohort-banner .c-price {
+      font-size: 0.82rem;
+      color: var(--light);
+      margin-top: 8px;
+    }
+    .cohort-banner .c-price strong { color: var(--brass2); }
+
+    .divider { display: flex; align-items: center; gap: 10px; margin: 28px 0 20px; }
+    .divider-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 3px; color: var(--dim); white-space: nowrap; text-transform: uppercase; }
+    .divider-line { flex: 1; height: 1px; background: var(--line); }
+
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--light); margin-bottom: 7px; }
+    .field label .req { color: var(--brass2); margin-left: 2px; }
+    .field label .hint { font-weight: 400; font-size: 0.72rem; color: var(--dim); margin-left: 6px; }
+
+    input[type=text], input[type=url], input[type=tel], select {
+      width: 100%;
+      background: var(--panel);
+      border: 1px solid var(--line2);
+      color: var(--white);
+      font-family: var(--body);
+      font-size: 0.9rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color .15s;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+    input:focus, select:focus { border-color: var(--brass); }
+    select option { background: var(--panel2); }
+
+    .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .radio-item {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--panel); border: 1px solid var(--line2);
+      padding: 9px 16px; cursor: pointer;
+      transition: border-color .15s;
+      font-size: 0.85rem; color: var(--mid); user-select: none;
+    }
+    .radio-item input { display: none; }
+    .radio-item.active { border-color: var(--brass); color: var(--white); }
+
+    /* 동의 항목 */
+    .agree-list { display: flex; flex-direction: column; gap: 8px; }
+    .agree-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--panel); border: 1px solid var(--line2);
+      padding: 12px 14px; cursor: pointer; user-select: none;
+    }
+    .agree-item input[type=checkbox] { display: none; }
+    .agree-box {
+      width: 16px; height: 16px; border: 1px solid var(--line2);
+      flex-shrink: 0; margin-top: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: transparent;
+      transition: all .15s;
+    }
+    .agree-item.active .agree-box { border-color: var(--brass); color: var(--brass2); }
+    .agree-text { font-size: 0.82rem; color: var(--mid); line-height: 1.6; }
+    .agree-item.active .agree-text { color: var(--light); }
+
+    .submit-btn {
+      width: 100%; padding: 15px;
+      background: var(--brass); color: var(--bg);
+      font-family: var(--impact); font-size: 1.1rem; letter-spacing: 3px;
+      border: none; cursor: pointer; transition: background .15s; margin-top: 32px;
+    }
+    .submit-btn:hover { background: var(--brass2); }
+    .submit-btn:disabled { background: var(--line2); color: var(--dim); cursor: not-allowed; }
+
+    #done { display: none; text-align: center; padding: 60px 20px; }
+    #done .done-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    #done h2 { font-family: var(--impact); font-size: 1.8rem; letter-spacing: 3px; color: var(--white); margin-bottom: 8px; }
+    #done p { font-size: 0.85rem; color: var(--dim); line-height: 1.7; }
+    #done a { display: inline-block; margin-top: 24px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 2px; color: var(--brass2); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1><a href="index.html"><span>21</span>일 글쓰기</a></h1>
+  <a class="nav-link" href="index.html">← 대시보드</a>
+</header>
+
+<div class="container">
+  <div class="page-title">참가자 등록</div>
+  <div class="page-sub">기수 시작 전 1회 작성하세요</div>
+
+  <form id="reg-form">
+
+    <div class="divider"><span class="divider-label">참가 코드</span><div class="divider-line"></div></div>
+
+    <div class="field">
+      <label>참가 코드<span class="req">*</span><span class="hint">운영진에게 받은 4자리 코드</span></label>
+      <input type="text" name="accessCode" id="access-code" placeholder="참가 코드 입력" maxlength="10" required autocomplete="off" />
+      <div id="code-error" style="display:none; margin-top:6px; font-family:var(--mono); font-size:0.65rem; color:var(--red); letter-spacing:1px;">코드가 올바르지 않습니다.</div>
+    </div>
+
+    <div class="divider"><span class="divider-label">기본 정보</span><div class="divider-line"></div></div>
+
+    <div class="field">
+      <label>닉네임<span class="req">*</span><span class="hint">대시보드에 표시될 이름</span></label>
+      <input type="text" name="nickname" placeholder="예: 김마케터" required maxlength="10" />
+    </div>
+
+    <div class="field">
+      <label>블로그 URL<span class="req">*</span></label>
+      <input type="url" name="blogUrl" placeholder="https://blog.naver.com/..." required />
+    </div>
+
+    <div class="divider"><span class="divider-label">시작 레벨</span><div class="divider-line"></div></div>
+
+    <div class="field">
+      <label>시작 레벨<span class="req">*</span></label>
+      <div class="radio-group" id="startlevel-group">
+        <label class="radio-item"><input type="radio" name="startLevel" value="브론즈" required>🥉 브론즈</label>
+        <label class="radio-item"><input type="radio" name="startLevel" value="실버">🥈 실버</label>
+        <label class="radio-item"><input type="radio" name="startLevel" value="골드">🥇 골드</label>
+      </div>
+    </div>
+
+    <div class="divider"><span class="divider-label">동의 사항</span><div class="divider-line"></div></div>
+
+    <div class="agree-list">
+      <label class="agree-item">
+        <input type="checkbox" name="agree1" required />
+        <div class="agree-box">✓</div>
+        <div class="agree-text">21일 동안 매일 글을 발행하고, 종료 후 리포트를 제출하겠습니다.</div>
+      </label>
+      <label class="agree-item">
+        <input type="checkbox" name="agree2" required />
+        <div class="agree-box">✓</div>
+        <div class="agree-text">리포트 미제출 또는 KPI 미달성 시 보증금이 몰수됨을 동의합니다.</div>
+      </label>
+      <label class="agree-item">
+        <input type="checkbox" name="agree3" required />
+        <div class="agree-box">✓</div>
+        <div class="agree-text">성과 수치(조회수, 방문자, 매출 여부)가 전체 참가자에게 공개됨을 동의합니다.</div>
+      </label>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submit-btn">등록하기</button>
+  </form>
+
+  <div id="done">
+    <div class="done-icon">✓</div>
+    <h2>등록 완료</h2>
+    <p>21일 후에 다른 사람이 되어 있을 겁니다.<br>매일 씁시다.</p>
+    <a href="index.html">대시보드에서 확인하기 →</a>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+  function initRadioGroup(id) {
+    const g = document.getElementById(id);
+    if(!g) return;
+    g.querySelectorAll('.radio-item').forEach(item => {
+      item.addEventListener('click', () => {
+        g.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        item.querySelector('input').checked = true;
+        item.querySelector('input').dispatchEvent(new Event('change',{bubbles:true}));
+      });
+    });
+  }
+  initRadioGroup('startlevel-group');
+
+  // 동의 체크박스
+  document.querySelectorAll('.agree-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const cb = item.querySelector('input[type=checkbox]');
+      cb.checked = !cb.checked;
+      item.classList.toggle('active', cb.checked);
+    });
+  });
+
+  const ACCESS_CODE = '0000'; // 운영 시 이 값만 변경
+
+  document.getElementById('reg-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+
+    // 코드 검증
+    if(data.accessCode !== ACCESS_CODE) {
+      document.getElementById('code-error').style.display = 'block';
+      document.getElementById('access-code').focus();
+      return;
+    }
+    document.getElementById('code-error').style.display = 'none';
+
+    DB.saveParticipant(data);
+    document.getElementById('reg-form').style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+  });
+
+  // 코드 입력 시 에러 메시지 숨김
+  document.getElementById('access-code').addEventListener('input', () => {
+    document.getElementById('code-error').style.display = 'none';
+  });
+</script>
+</body>
+</html>
