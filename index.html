@@ -529,13 +529,24 @@
         grid-template-columns: 1fr;
       }
 
-      /* 랭킹: 스탯 컬럼 숨기고 이름 영역 아래에 스탯 인라인 표시 */
+      /* 랭킹: 3컬럼 → 2컬럼, 스탯은 이름 아래로 */
       .rank-row {
         grid-template-columns: 40px 1fr;
         min-height: auto;
+        flex-wrap: wrap;
       }
-      /* 스탯(.rs) 독립 컬럼 숨김 */
-      .rs { display: none; }
+      .rs {
+        grid-column: 2 / 3;
+        border-top: 1px solid var(--line);
+        border-left: none;
+        padding: 8px 14px 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .rs-row { gap: 10px; }
+      .rs-item { text-align: left; }
+      .rs-tags { justify-content: flex-start; }
 
       /* 이름/진행바 영역 폰트 */
       .ri-name { font-size: 0.88rem; }
