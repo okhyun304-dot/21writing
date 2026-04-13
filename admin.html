@@ -26,7 +26,7 @@
       --body: 'Noto Sans KR', sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--light); font-family: var(--body); min-height: 100vh; padding-bottom: 80px; }
+    body { background: var(--bg); color: var(--light); font-family: var(--body); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; word-break: keep-all; min-height: 100vh; padding-bottom: 80px; }
 
     /* ══ 잠금 화면 ══ */
     #lock-screen {
@@ -45,7 +45,7 @@
     #lock-screen h2 span { color: var(--brass2); }
     .lock-sub {
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.76rem;
       letter-spacing: 3px;
       color: var(--dim);
       margin-top: -16px;
@@ -80,7 +80,7 @@
     #lock-btn:hover { background: var(--brass2); }
     #lock-err {
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.76rem;
       color: var(--red);
       letter-spacing: 2px;
       display: none;
@@ -97,10 +97,10 @@
     header h1 a { text-decoration: none; color: inherit; }
     header h1 span { color: var(--brass2); }
     .header-badge {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 2px;
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 2px;
       color: var(--red2); border: 1px solid var(--red); padding: 3px 8px; margin-left: 10px;
     }
-    .nav-link { font-family: var(--mono); font-size: 0.65rem; color: var(--dim); text-decoration: none; letter-spacing: 2px; }
+    .nav-link { font-family: var(--mono); font-size: 0.76rem; color: var(--dim); text-decoration: none; letter-spacing: 2px; }
     .nav-link:hover { color: var(--brass2); }
 
     /* ══ 통계 바 ══ */
@@ -132,7 +132,7 @@
     }
     .adm-rule { flex: 1; height: 1px; background: var(--line); }
     .adm-action {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 1px;
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 1px;
       color: var(--dim); border: 1px solid var(--line2); padding: 4px 10px;
       cursor: pointer; background: none; transition: all .15s;
     }
@@ -146,7 +146,7 @@
     }
     .today-col { background: var(--panel); padding: 16px; }
     .today-col-head {
-      font-family: var(--mono); font-size: 0.62rem; letter-spacing: 2px;
+      font-family: var(--mono); font-size: 0.74rem; letter-spacing: 2px;
       margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
     }
     .today-col-head.done { color: var(--green); }
@@ -154,12 +154,12 @@
     .today-person {
       display: flex; align-items: center; gap: 8px;
       padding: 6px 0; border-bottom: 1px solid var(--line);
-      font-size: 0.82rem;
+      font-size: 0.92rem;
     }
     .today-person:last-child { border-bottom: none; }
     .today-name { color: var(--light); font-weight: 500; flex: 1; }
-    .today-level { font-family: var(--mono); font-size: 0.6rem; color: var(--dim); }
-    .today-post-link { font-family: var(--mono); font-size: 0.6rem; color: var(--mid); text-decoration: none; }
+    .today-level { font-family: var(--mono); font-size: 0.72rem; color: var(--dim); }
+    .today-post-link { font-family: var(--mono); font-size: 0.72rem; color: var(--mid); text-decoration: none; }
     .today-post-link:hover { color: var(--brass2); }
 
     /* ══ 참가자 테이블 ══ */
@@ -171,14 +171,14 @@
     }
     .p-table td {
       padding: 10px 12px; border-bottom: 1px solid var(--line);
-      font-size: 0.82rem; color: var(--light); background: var(--panel);
+      font-size: 0.92rem; color: var(--light); background: var(--panel);
       vertical-align: middle;
     }
     .p-table tr:last-child td { border-bottom: none; }
     .p-table tr:hover td { background: var(--panel2); }
 
     .lv-badge {
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 1px;
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 1px;
       padding: 2px 7px; border: 1px solid var(--line2); color: var(--dim);
     }
     .lv-badge.골드  { border-color: var(--brass); color: var(--brass2); }
@@ -195,7 +195,7 @@
     .rate-fill.low  { background: var(--red); }
     .rate-fill.mid  { background: var(--mid); }
     .rate-fill.hi   { background: var(--green); }
-    .rate-txt { font-family: var(--mono); font-size: 0.7rem; color: var(--light); }
+    .rate-txt { font-family: var(--mono); font-size: 0.82rem; color: var(--light); }
 
     .del-btn {
       font-family: var(--mono); font-size: 0.58rem; letter-spacing: 1px;
@@ -212,7 +212,7 @@
       padding: 0 !important;
     }
     .sub-inner { padding: 12px 16px; }
-    .sub-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    .sub-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
     .sub-table th {
       font-family: var(--mono); font-size: 0.55rem; letter-spacing: 1px;
       color: var(--dim); padding: 6px 10px; border-bottom: 1px solid var(--line);
@@ -220,11 +220,11 @@
     }
     .sub-table td { padding: 6px 10px; border-bottom: 1px solid var(--line); color: var(--mid); }
     .sub-table tr:last-child td { border-bottom: none; }
-    .sub-table a { color: var(--mid); text-decoration: none; font-family: var(--mono); font-size: 0.68rem; }
+    .sub-table a { color: var(--mid); text-decoration: none; font-family: var(--mono); font-size: 0.78rem; }
     .sub-table a:hover { color: var(--brass2); }
 
     .expand-btn {
-      font-family: var(--mono); font-size: 0.6rem; color: var(--dim);
+      font-family: var(--mono); font-size: 0.72rem; color: var(--dim);
       background: none; border: none; cursor: pointer; letter-spacing: 1px;
       padding: 0;
     }
@@ -239,10 +239,10 @@
       padding: 16px 20px;
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
     }
-    .danger-desc { font-size: 0.82rem; color: var(--mid); }
+    .danger-desc { font-size: 0.92rem; color: var(--mid); }
     .danger-desc strong { color: var(--red2); }
     .btn-danger {
-      font-family: var(--impact); font-size: 0.9rem; letter-spacing: 2px;
+      font-family: var(--impact); font-size: 1rem; letter-spacing: 2px;
       background: var(--red); color: var(--white);
       border: none; padding: 9px 18px; cursor: pointer; transition: background .15s;
     }
@@ -251,7 +251,7 @@
     /* ══ 빈 상태 ══ */
     .empty-msg {
       padding: 20px; text-align: center;
-      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 2px;
+      font-family: var(--mono); font-size: 0.78rem; letter-spacing: 2px;
       color: var(--dim); border: 1px solid var(--line2); background: var(--panel);
     }
 
@@ -315,18 +315,18 @@
       <div>
         <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);letter-spacing:1px;margin-bottom:6px;">챌린지 시작일</div>
         <input type="date" id="challenge-start-date"
-          style="background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.8rem;padding:8px 12px;outline:none;cursor:pointer;" />
+          style="background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.9rem;padding:8px 12px;outline:none;cursor:pointer;" />
       </div>
       <div>
         <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);letter-spacing:1px;margin-bottom:6px;">진행 기간 (일)</div>
         <input type="number" id="challenge-total-days" value="21" min="1" max="100"
-          style="width:70px;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.8rem;padding:8px 12px;outline:none;text-align:center;" />
+          style="width:70px;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.9rem;padding:8px 12px;outline:none;text-align:center;" />
       </div>
       <div style="align-self:flex-end;">
         <button onclick="saveChallengeConfig()"
-          style="background:var(--brass);border:none;color:var(--bg);font-family:var(--impact);font-size:.9rem;letter-spacing:2px;padding:9px 20px;cursor:pointer;">저장</button>
+          style="background:var(--brass);border:none;color:var(--bg);font-family:var(--impact);font-size:1rem;letter-spacing:2px;padding:9px 20px;cursor:pointer;">저장</button>
       </div>
-      <div id="challenge-status" style="font-family:var(--mono);font-size:.7rem;color:var(--dim);align-self:flex-end;"></div>
+      <div id="challenge-status" style="font-family:var(--mono);font-size:.82rem;color:var(--dim);align-self:flex-end;"></div>
     </div>
   </div>
 
@@ -335,7 +335,7 @@
     <div class="adm-head">
       <span class="adm-label">오늘 제출 현황</span>
       <div class="adm-rule"></div>
-      <span id="today-date-label" style="font-family:var(--mono);font-size:.6rem;color:var(--dim);letter-spacing:1px"></span>
+      <span id="today-date-label" style="font-family:var(--mono);font-size:.72rem;color:var(--dim);letter-spacing:1px"></span>
     </div>
     <div class="today-grid" id="today-grid"></div>
     <!-- 미제출자 목록 -->
@@ -360,7 +360,7 @@
     <div class="adm-head">
       <span class="adm-label">전체 제출 기록</span>
       <div class="adm-rule"></div>
-      <span id="sub-count" style="font-family:var(--mono);font-size:.6rem;color:var(--dim)"></span>
+      <span id="sub-count" style="font-family:var(--mono);font-size:.72rem;color:var(--dim)"></span>
     </div>
     <div id="submission-log-wrap"></div>
   </div>
@@ -370,14 +370,14 @@
     <div class="adm-head">
       <span class="adm-label" style="color:var(--green)">🔗 구글 시트 연동</span>
       <div class="adm-rule"></div>
-      <span id="sheets-status-badge" style="font-family:var(--mono);font-size:.6rem;padding:3px 8px;border:1px solid var(--line2);color:var(--dim)">미연결</span>
+      <span id="sheets-status-badge" style="font-family:var(--mono);font-size:.72rem;padding:3px 8px;border:1px solid var(--line2);color:var(--dim)">미연결</span>
     </div>
 
     <div style="background:var(--panel);border:1px solid var(--line2);border-top:2px solid var(--green);padding:18px;margin-bottom:12px;">
       <!-- 연결 안 된 상태: 안내 -->
       <div id="sheets-guide" style="display:none;margin-bottom:16px;padding:12px;background:var(--panel2);border-left:3px solid var(--brass)">
-        <div style="font-family:var(--mono);font-size:.62rem;color:var(--brass2);letter-spacing:2px;margin-bottom:8px;">설정 방법</div>
-        <ol style="font-size:.72rem;color:var(--mid);line-height:1.9;padding-left:16px;">
+        <div style="font-family:var(--mono);font-size:.74rem;color:var(--brass2);letter-spacing:2px;margin-bottom:8px;">설정 방법</div>
+        <ol style="font-size:.84rem;color:var(--mid);line-height:1.9;padding-left:16px;">
           <li><a href="https://sheets.new" target="_blank" style="color:var(--brass2)">sheets.new</a> 에서 구글 시트 새로 만들기</li>
           <li>상단 메뉴 → <b style="color:var(--white)">확장 프로그램</b> → <b style="color:var(--white)">Apps Script</b></li>
           <li>기존 코드 전체 삭제 후 <b style="color:var(--white)">gas.js</b> 내용 붙여넣기</li>
@@ -390,21 +390,21 @@
       <!-- 미연결 상태: URL 입력 -->
       <div id="sheets-input-bar" style="display:flex;gap:8px;margin-bottom:10px;">
         <input type="url" id="sheets-url-input" placeholder="https://script.google.com/macros/s/.../exec"
-          style="flex:1;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.7rem;padding:9px 12px;outline:none;" />
-        <button onclick="saveSheetUrl()" style="background:var(--green);border:none;color:#000;font-family:var(--impact);font-size:.85rem;letter-spacing:2px;padding:0 16px;cursor:pointer;">저장</button>
+          style="flex:1;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.82rem;padding:9px 12px;outline:none;" />
+        <button onclick="saveSheetUrl()" style="background:var(--green);border:none;color:#000;font-family:var(--impact);font-size:.95rem;letter-spacing:2px;padding:0 16px;cursor:pointer;">저장</button>
       </div>
 
       <!-- 연결된 상태 -->
       <div id="sheets-connected-bar" style="display:none;gap:8px;align-items:center;flex-wrap:wrap;">
-        <button onclick="syncFromSheets()" style="background:var(--panel2);border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:.65rem;padding:7px 14px;cursor:pointer;letter-spacing:1px;">
+        <button onclick="syncFromSheets()" style="background:var(--panel2);border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:.76rem;padding:7px 14px;cursor:pointer;letter-spacing:1px;">
           ↓ 최신 데이터 불러오기
         </button>
-        <span style="font-family:var(--mono);font-size:.6rem;color:var(--dim)" id="sheets-last-sync"></span>
+        <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim)" id="sheets-last-sync"></span>
         <a id="sheets-open-link" href="#" target="_blank"
-           style="font-family:var(--mono);font-size:.6rem;color:var(--dim);text-decoration:none;border:1px solid var(--line2);padding:5px 10px;">
+           style="font-family:var(--mono);font-size:.72rem;color:var(--dim);text-decoration:none;border:1px solid var(--line2);padding:5px 10px;">
           시트 열기 ↗
         </a>
-        <button onclick="disconnectSheet()" style="margin-left:auto;background:none;border:1px solid var(--line2);color:var(--dim);font-family:var(--mono);font-size:.6rem;padding:5px 10px;cursor:pointer;">연동 해제</button>
+        <button onclick="disconnectSheet()" style="margin-left:auto;background:none;border:1px solid var(--line2);color:var(--dim);font-family:var(--mono);font-size:.72rem;padding:5px 10px;cursor:pointer;">연동 해제</button>
       </div>
     </div>
   </div>
@@ -422,56 +422,56 @@
       <input type="hidden" id="hof-edit-original" value="" />
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
         <div>
-          <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);margin-bottom:5px;">이름 (닉네임)<span style="color:var(--brass2)">*</span></div>
-          <input type="text" id="hof-name" placeholder="예: 김마케터" style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--body);font-size:.85rem;padding:9px 12px;outline:none;" />
+          <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-bottom:5px;">이름 (닉네임)<span style="color:var(--brass2)">*</span></div>
+          <input type="text" id="hof-name" placeholder="예: 김마케터" style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--body);font-size:.95rem;padding:9px 12px;outline:none;" />
         </div>
         <div>
-          <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);margin-bottom:5px;">프로필 이미지 <span style="color:var(--dim);font-weight:400">(선택)</span></div>
+          <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-bottom:5px;">프로필 이미지 <span style="color:var(--dim);font-weight:400">(선택)</span></div>
           <div style="display:flex;gap:8px;align-items:center;">
             <label style="flex:1;display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line2);padding:8px 12px;cursor:pointer;">
               <input type="file" id="hof-img-file" accept="image/*" style="display:none;" onchange="previewHofImage(this)" />
-              <span id="hof-img-filename" style="font-family:var(--mono);font-size:.7rem;color:var(--dim);">파일 선택...</span>
+              <span id="hof-img-filename" style="font-family:var(--mono);font-size:.82rem;color:var(--dim);">파일 선택...</span>
             </label>
             <div id="hof-img-preview" style="display:none;width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid var(--brass);flex-shrink:0;">
               <img id="hof-img-preview-img" style="width:100%;height:100%;object-fit:cover;" />
             </div>
-            <button type="button" id="hof-img-clear" onclick="clearHofImage()" style="display:none;background:none;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:.6rem;padding:6px 10px;cursor:pointer;">✕</button>
+            <button type="button" id="hof-img-clear" onclick="clearHofImage()" style="display:none;background:none;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);font-size:.72rem;padding:6px 10px;cursor:pointer;">✕</button>
           </div>
           <input type="hidden" id="hof-img" />
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
         <div>
-          <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);margin-bottom:5px;">누적 조회수</div>
-          <input type="number" id="hof-views" placeholder="예: 2800" min="0" style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.85rem;padding:9px 12px;outline:none;" />
+          <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-bottom:5px;">누적 조회수</div>
+          <input type="number" id="hof-views" placeholder="예: 2800" min="0" style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.95rem;padding:9px 12px;outline:none;" />
         </div>
         <div>
-          <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);margin-bottom:5px;">문의 발생 여부</div>
+          <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-bottom:5px;">문의 발생 여부</div>
           <div style="display:flex;gap:8px;margin-top:2px;">
-            <label id="hof-inq-label-x" style="display:flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line2);padding:8px 14px;cursor:pointer;font-size:.82rem;color:var(--mid);">
+            <label id="hof-inq-label-x" style="display:flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line2);padding:8px 14px;cursor:pointer;font-size:.92rem;color:var(--mid);">
               <input type="radio" name="hof-inq" value="X" checked style="display:none;" />없음
             </label>
-            <label id="hof-inq-label-o" style="display:flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line2);padding:8px 14px;cursor:pointer;font-size:.82rem;color:var(--mid);">
+            <label id="hof-inq-label-o" style="display:flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line2);padding:8px 14px;cursor:pointer;font-size:.92rem;color:var(--mid);">
               <input type="radio" name="hof-inq" value="O" style="display:none;" />발생
             </label>
           </div>
         </div>
       </div>
       <div style="margin-bottom:10px;">
-        <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);margin-bottom:5px;">블로그 URL <span style="color:var(--dim);font-weight:400">(이름 클릭 시 이동, 선택)</span></div>
-        <input type="url" id="hof-blog-url" placeholder="https://blog.naver.com/..." style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.78rem;padding:9px 12px;outline:none;" />
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-bottom:5px;">블로그 URL <span style="color:var(--dim);font-weight:400">(이름 클릭 시 이동, 선택)</span></div>
+        <input type="url" id="hof-blog-url" placeholder="https://blog.naver.com/..." style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.88rem;padding:9px 12px;outline:none;" />
       </div>
       <div style="margin-bottom:10px;">
-        <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);margin-bottom:5px;">성과 스토리 URL <span style="color:var(--brass2)">*</span> <span style="color:var(--dim);font-weight:400">(마케팅주의자 블로그 글)</span></div>
-        <input type="url" id="hof-url" placeholder="https://blog.naver.com/marketingist/..." style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.78rem;padding:9px 12px;outline:none;" />
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-bottom:5px;">성과 스토리 URL <span style="color:var(--brass2)">*</span> <span style="color:var(--dim);font-weight:400">(마케팅주의자 블로그 글)</span></div>
+        <input type="url" id="hof-url" placeholder="https://blog.naver.com/marketingist/..." style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.88rem;padding:9px 12px;outline:none;" />
       </div>
       <div style="margin-bottom:14px;">
-        <div style="font-family:var(--mono);font-size:.6rem;color:var(--dim);margin-bottom:5px;">한줄 후기<span style="color:var(--brass2)">*</span></div>
-        <input type="text" id="hof-review" placeholder='예: 피드백 받고 3주 만에 첫 계약이 터졌습니다.' style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--body);font-size:.85rem;padding:9px 12px;outline:none;" />
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-bottom:5px;">한줄 후기<span style="color:var(--brass2)">*</span></div>
+        <input type="text" id="hof-review" placeholder='예: 피드백 받고 3주 만에 첫 계약이 터졌습니다.' style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--body);font-size:.95rem;padding:9px 12px;outline:none;" />
       </div>
       <div style="display:flex;gap:8px;">
         <button id="hof-submit-btn" onclick="addHof()" style="background:var(--brass);border:none;color:var(--bg);font-family:var(--impact);font-size:.95rem;letter-spacing:2px;padding:10px 24px;cursor:pointer;">입성 등록</button>
-        <button id="hof-cancel-btn" onclick="cancelEditHof()" style="display:none;background:none;border:1px solid var(--line2);color:var(--dim);font-family:var(--mono);font-size:.72rem;padding:10px 16px;cursor:pointer;letter-spacing:1px;">취소</button>
+        <button id="hof-cancel-btn" onclick="cancelEditHof()" style="display:none;background:none;border:1px solid var(--line2);color:var(--dim);font-family:var(--mono);font-size:.84rem;padding:10px 16px;cursor:pointer;letter-spacing:1px;">취소</button>
       </div>
     </div>
 
@@ -705,11 +705,11 @@ function renderAll() {
   document.getElementById('today-grid').innerHTML = `
     <div class="today-col">
       <div class="today-col-head done">✓ 제출 완료 ${done.length}명</div>
-      ${done.length ? done.map(p=>todayRow(p,true)).join('') : '<div style="font-family:var(--mono);font-size:.65rem;color:var(--dim);padding:8px 0">아직 없음</div>'}
+      ${done.length ? done.map(p=>todayRow(p,true)).join('') : '<div style="font-family:var(--mono);font-size:.76rem;color:var(--dim);padding:8px 0">아직 없음</div>'}
     </div>
     <div class="today-col">
       <div class="today-col-head not">✗ 미제출 ${absent.length}명</div>
-      ${absent.length ? absent.map(p=>todayRow(p,false)).join('') : '<div style="font-family:var(--mono);font-size:.65rem;color:var(--dim);padding:8px 0">전원 제출 완료</div>'}
+      ${absent.length ? absent.map(p=>todayRow(p,false)).join('') : '<div style="font-family:var(--mono);font-size:.76rem;color:var(--dim);padding:8px 0">전원 제출 완료</div>'}
     </div>`;
 
   // ── 미제출자 목록 ──
@@ -717,9 +717,9 @@ function renderAll() {
   const nsList    = document.getElementById('nosubmit-list');
   if (absent.length > 0) {
     nsList.innerHTML = absent.map(p => `
-      <span style="font-family:var(--mono);font-size:.7rem;color:var(--mid);background:var(--panel2);padding:4px 10px;border:1px solid var(--line2);">
+      <span style="font-family:var(--mono);font-size:.82rem;color:var(--mid);background:var(--panel2);padding:4px 10px;border:1px solid var(--line2);">
         ${esc(p.nickname)}
-        <span style="color:var(--dim);font-size:.6rem;margin-left:4px;">${p.startLevel||'브론즈'}</span>
+        <span style="color:var(--dim);font-size:.72rem;margin-left:4px;">${p.startLevel||'브론즈'}</span>
       </span>`).join('');
     nsSection.style.display = 'block';
   } else {
@@ -755,19 +755,19 @@ function renderAll() {
           </td>
           <td style="font-weight:700;color:var(--white)">${esc(d.p.nickname)}</td>
           <td><span class="lv-badge ${d.p.startLevel||'브론즈'}">${d.p.startLevel||'브론즈'}</span></td>
-          <td style="font-family:var(--mono);font-size:.72rem">${d.regDate}</td>
+          <td style="font-family:var(--mono);font-size:.84rem">${d.regDate}</td>
           <td>
             <div class="rate-bar">
               <div class="rate-track"><div class="rate-fill ${rateCls}" style="width:${Math.min(100,d.rate)}%"></div></div>
               <span class="rate-txt">${d.submitDays}/21일 (${d.rate}%)</span>
             </div>
           </td>
-          <td style="font-family:var(--mono);font-size:.8rem">${d.totalViews.toLocaleString()}</td>
-          <td style="font-family:var(--mono);font-size:.8rem">${d.totalCmts}</td>
+          <td style="font-family:var(--mono);font-size:.9rem">${d.totalViews.toLocaleString()}</td>
+          <td style="font-family:var(--mono);font-size:.9rem">${d.totalCmts}</td>
           <td>
-            <span style="font-family:var(--mono);font-size:.65rem;color:${d.hasInq?'var(--mid)':'var(--line2)'}">${d.hasInq?'발생':'없음'}</span>
+            <span style="font-family:var(--mono);font-size:.76rem;color:${d.hasInq?'var(--mid)':'var(--line2)'}">${d.hasInq?'발생':'없음'}</span>
             /
-            <span style="font-family:var(--mono);font-size:.65rem;color:${d.hasRev?'var(--brass2)':'var(--line2)'}">${d.hasRev?'달성':'없음'}</span>
+            <span style="font-family:var(--mono);font-size:.76rem;color:${d.hasRev?'var(--brass2)':'var(--line2)'}">${d.hasRev?'달성':'없음'}</span>
           </td>
           <td><button class="del-btn" onclick="deleteParticipant('${esc(d.p.nickname)}')">삭제</button></td>
         </tr>
@@ -781,16 +781,16 @@ function renderAll() {
                   </tr></thead>
                   <tbody>
                     ${d.mine.map(s=>`<tr>
-                      <td style="font-family:var(--mono);font-size:.65rem">${(s.submittedAt||'').slice(0,10)}</td>
+                      <td style="font-family:var(--mono);font-size:.76rem">${(s.submittedAt||'').slice(0,10)}</td>
                       <td>${s.postLink?`<a href="${esc(s.postLink)}" target="_blank">${esc(s.postTitle||s.postLink)}</a>`:esc(s.postTitle||'—')}</td>
                       <td>${s.todayComments||0}</td>
                       <td>${s.dailyViews||0}</td>
                       <td style="color:${s.inquiry==='O'?'var(--mid)':'var(--line2)'}">${s.inquiry||'—'}</td>
                       <td style="color:${s.revenue==='O'?'var(--brass2)':'var(--line2)'}">${s.revenue||'—'}</td>
-                      <td style="font-size:.72rem;color:var(--dim)">${esc(s.memo||'')}</td>
+                      <td style="font-size:.84rem;color:var(--dim)">${esc(s.memo||'')}</td>
                     </tr>`).join('')}
                   </tbody>
-                </table>` : '<div style="font-family:var(--mono);font-size:.65rem;color:var(--dim);padding:4px 0">제출 기록 없음</div>'}
+                </table>` : '<div style="font-family:var(--mono);font-size:.76rem;color:var(--dim);padding:4px 0">제출 기록 없음</div>'}
             </div>
           </td>
         </tr>`;
@@ -826,14 +826,14 @@ function renderAll() {
         </tr></thead>
         <tbody>
           ${sorted.map(s=>`<tr>
-            <td style="font-family:var(--mono);font-size:.65rem">${(s.submittedAt||'').replace('T',' ').slice(0,16)}</td>
+            <td style="font-family:var(--mono);font-size:.76rem">${(s.submittedAt||'').replace('T',' ').slice(0,16)}</td>
             <td style="font-weight:700;color:var(--white)">${esc(s.nickname)}</td>
             <td><span class="lv-badge ${s.level||''}">${s.level||'—'}</span></td>
-            <td>${s.postLink?`<a href="${esc(s.postLink)}" target="_blank" style="color:var(--mid);text-decoration:none;font-family:var(--mono);font-size:.68rem">${esc(s.postTitle||s.postLink)}</a>`:esc(s.postTitle||'—')}</td>
+            <td>${s.postLink?`<a href="${esc(s.postLink)}" target="_blank" style="color:var(--mid);text-decoration:none;font-family:var(--mono);font-size:.78rem">${esc(s.postTitle||s.postLink)}</a>`:esc(s.postTitle||'—')}</td>
             <td style="font-family:var(--mono)">${s.todayComments||0}</td>
             <td style="font-family:var(--mono)">${s.dailyViews||0}</td>
-            <td style="color:${s.inquiry==='O'?'var(--mid)':'var(--line2)'};font-family:var(--mono);font-size:.72rem">${s.inquiry||'—'}</td>
-            <td style="color:${s.revenue==='O'?'var(--brass2)':'var(--line2)'};font-family:var(--mono);font-size:.72rem">${s.revenue||'—'}</td>
+            <td style="color:${s.inquiry==='O'?'var(--mid)':'var(--line2)'};font-family:var(--mono);font-size:.84rem">${s.inquiry||'—'}</td>
+            <td style="color:${s.revenue==='O'?'var(--brass2)':'var(--line2)'};font-family:var(--mono);font-size:.84rem">${s.revenue||'—'}</td>
           </tr>`).join('')}
         </tbody>
       </table>`;
@@ -917,13 +917,13 @@ function renderHof() {
           <td style="width:40px">
             ${d.imgUrl
               ? `<img src="${esc(d.imgUrl)}" style="width:32px;height:32px;object-fit:cover;border-radius:50%;border:1px solid var(--brass);" onerror="this.style.display='none'">`
-              : `<div style="width:32px;height:32px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--impact);font-size:.8rem;color:var(--brass2);">${esc(name[0])}</div>`}
+              : `<div style="width:32px;height:32px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:var(--impact);font-size:.9rem;color:var(--brass2);">${esc(name[0])}</div>`}
           </td>
           <td style="font-weight:700;color:var(--brass2)">${esc(name)}</td>
-          <td style="font-size:.8rem;color:var(--mid);max-width:220px">"${esc(d.review||'—')}"</td>
-          <td style="font-family:var(--mono);font-size:.78rem">${d.totalViews ? Number(d.totalViews).toLocaleString() : '—'}</td>
-          <td style="font-family:var(--mono);font-size:.72rem;color:${d.inquiry==='O'?'var(--mid)':'var(--line2)'}">${d.inquiry==='O'?'발생':'없음'}</td>
-          <td>${d.storyUrl ? `<a href="${esc(d.storyUrl)}" target="_blank" style="font-family:var(--mono);font-size:.65rem;color:var(--dim);text-decoration:none;">↗ 링크</a>` : '—'}</td>
+          <td style="font-size:.9rem;color:var(--mid);max-width:220px">"${esc(d.review||'—')}"</td>
+          <td style="font-family:var(--mono);font-size:.88rem">${d.totalViews ? Number(d.totalViews).toLocaleString() : '—'}</td>
+          <td style="font-family:var(--mono);font-size:.84rem;color:${d.inquiry==='O'?'var(--mid)':'var(--line2)'}">${d.inquiry==='O'?'발생':'없음'}</td>
+          <td>${d.storyUrl ? `<a href="${esc(d.storyUrl)}" target="_blank" style="font-family:var(--mono);font-size:.76rem;color:var(--dim);text-decoration:none;">↗ 링크</a>` : '—'}</td>
           <td style="display:flex;gap:6px;align-items:center;">
             <button class="adm-action" onclick="editHof('${esc(name)}')">수정</button>
             <button class="del-btn" onclick="removeHof('${esc(name)}')">제거</button>

@@ -28,6 +28,10 @@
       background: var(--bg);
       color: var(--light);
       font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      word-break: keep-all;
       min-height: 100vh;
       padding-bottom: 64px;
     }
@@ -42,12 +46,12 @@
     header h1 { font-family: var(--impact); font-size: 1.4rem; letter-spacing: 3px; color: var(--white); }
   header h1 a { text-decoration: none; color: inherit; }
     header h1 span { color: var(--brass2); }
-    .nav-link { font-family: var(--mono); font-size: 0.65rem; color: var(--dim); text-decoration: none; letter-spacing: 2px; }
+    .nav-link { font-family: var(--mono); font-size: 0.76rem; color: var(--dim); text-decoration: none; letter-spacing: 2px; }
     .nav-link:hover { color: var(--brass2); }
 
     .container { max-width: 600px; margin: 40px auto; padding: 0 16px; }
     .page-title { font-family: var(--impact); font-size: 2rem; letter-spacing: 3px; color: var(--white); margin-bottom: 4px; }
-    .page-sub { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 2px; color: var(--dim); margin-bottom: 32px; }
+    .page-sub { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 2px; color: var(--dim); margin-bottom: 32px; }
 
     /* 기수 배너 */
     .cohort-banner {
@@ -65,25 +69,25 @@
     }
     .cohort-banner .c-period {
       font-family: var(--mono);
-      font-size: 0.68rem;
+      font-size: 0.78rem;
       color: var(--dim);
       letter-spacing: 1px;
     }
     .cohort-banner .c-price {
-      font-size: 0.82rem;
+      font-size: 0.92rem;
       color: var(--light);
       margin-top: 8px;
     }
     .cohort-banner .c-price strong { color: var(--brass2); }
 
     .divider { display: flex; align-items: center; gap: 10px; margin: 28px 0 20px; }
-    .divider-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 3px; color: var(--dim); white-space: nowrap; text-transform: uppercase; }
+    .divider-label { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 3px; color: var(--dim); white-space: nowrap; text-transform: uppercase; }
     .divider-line { flex: 1; height: 1px; background: var(--line); }
 
     .field { margin-bottom: 18px; }
-    .field label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--light); margin-bottom: 7px; }
+    .field label { display: block; font-size: 0.9rem; font-weight: 700; color: var(--light); margin-bottom: 7px; }
     .field label .req { color: var(--brass2); margin-left: 2px; }
-    .field label .hint { font-weight: 400; font-size: 0.72rem; color: var(--dim); margin-left: 6px; }
+    .field label .hint { font-weight: 400; font-size: 0.84rem; color: var(--dim); margin-left: 6px; }
 
     input[type=text], input[type=url], input[type=tel], select {
       width: 100%;
@@ -91,7 +95,7 @@
       border: 1px solid var(--line2);
       color: var(--white);
       font-family: var(--body);
-      font-size: 0.9rem;
+      font-size: 1rem;
       padding: 11px 14px;
       outline: none;
       transition: border-color .15s;
@@ -107,7 +111,7 @@
       background: var(--panel); border: 1px solid var(--line2);
       padding: 9px 16px; cursor: pointer;
       transition: border-color .15s;
-      font-size: 0.85rem; color: var(--mid); user-select: none;
+      font-size: 0.95rem; color: var(--mid); user-select: none;
     }
     .radio-item input { display: none; }
     .radio-item.active { border-color: var(--brass); color: var(--white); }
@@ -124,11 +128,11 @@
       width: 16px; height: 16px; border: 1px solid var(--line2);
       flex-shrink: 0; margin-top: 2px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; color: transparent;
+      font-size: 0.82rem; color: transparent;
       transition: all .15s;
     }
     .agree-item.active .agree-box { border-color: var(--brass); color: var(--brass2); }
-    .agree-text { font-size: 0.82rem; color: var(--mid); line-height: 1.6; }
+    .agree-text { font-size: 0.92rem; color: var(--mid); line-height: 1.6; }
     .agree-item.active .agree-text { color: var(--light); }
 
     .submit-btn {
@@ -143,8 +147,8 @@
     #done { display: none; text-align: center; padding: 60px 20px; }
     #done .done-icon { font-size: 2.5rem; margin-bottom: 16px; }
     #done h2 { font-family: var(--impact); font-size: 1.8rem; letter-spacing: 3px; color: var(--white); margin-bottom: 8px; }
-    #done p { font-size: 0.85rem; color: var(--dim); line-height: 1.7; }
-    #done a { display: inline-block; margin-top: 24px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 2px; color: var(--brass2); text-decoration: none; }
+    #done p { font-size: 0.95rem; color: var(--dim); line-height: 1.7; }
+    #done a { display: inline-block; margin-top: 24px; font-family: var(--mono); font-size: 0.84rem; letter-spacing: 2px; color: var(--brass2); text-decoration: none; }
   </style>
 </head>
 <body>
@@ -165,7 +169,7 @@
     <div class="field">
       <label>참가 코드<span class="req">*</span><span class="hint">운영진에게 받은 4자리 코드</span></label>
       <input type="text" name="accessCode" id="access-code" placeholder="참가 코드 입력" maxlength="10" required autocomplete="off" />
-      <div id="code-error" style="display:none; margin-top:6px; font-family:var(--mono); font-size:0.65rem; color:var(--red); letter-spacing:1px;">코드가 올바르지 않습니다.</div>
+      <div id="code-error" style="display:none; margin-top:6px; font-family:var(--mono); font-size:0.76rem; color:var(--red); letter-spacing:1px;">코드가 올바르지 않습니다.</div>
     </div>
 
     <div class="divider"><span class="divider-label">기본 정보</span><div class="divider-line"></div></div>

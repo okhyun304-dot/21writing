@@ -29,6 +29,10 @@
       background: var(--bg);
       color: var(--light);
       font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      word-break: keep-all;
       min-height: 100vh;
       padding-bottom: 64px;
     }
@@ -51,7 +55,7 @@
     header h1 span { color: var(--brass2); }
     .nav-link {
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.76rem;
       color: var(--dim);
       text-decoration: none;
       letter-spacing: 2px;
@@ -74,7 +78,7 @@
     }
     .page-sub {
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.76rem;
       letter-spacing: 2px;
       color: var(--dim);
       margin-bottom: 32px;
@@ -92,7 +96,7 @@
     }
     .divider-label {
       font-family: var(--mono);
-      font-size: 0.6rem;
+      font-size: 0.72rem;
       letter-spacing: 3px;
       color: var(--dim);
       white-space: nowrap;
@@ -104,7 +108,7 @@
     .field { margin-bottom: 18px; }
     .field label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--light);
       margin-bottom: 7px;
@@ -112,7 +116,7 @@
     .field label .req { color: var(--brass2); margin-left: 2px; }
     .field label .hint {
       font-weight: 400;
-      font-size: 0.72rem;
+      font-size: 0.84rem;
       color: var(--dim);
       margin-left: 6px;
     }
@@ -155,7 +159,7 @@
       min-height: 44px; /* touch target minimum */
       cursor: pointer;
       transition: border-color .15s;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       color: var(--mid);
       user-select: none;
     }
@@ -204,12 +208,12 @@
       color: var(--white);
       margin-bottom: 8px;
     }
-    #done p { font-size: 0.85rem; color: var(--dim); line-height: 1.7; }
+    #done p { font-size: 0.95rem; color: var(--dim); line-height: 1.7; }
     #done a {
       display: inline-block;
       margin-top: 24px;
       font-family: var(--mono);
-      font-size: 0.72rem;
+      font-size: 0.84rem;
       letter-spacing: 2px;
       color: var(--brass2);
       text-decoration: none;
@@ -293,7 +297,7 @@
       <select name="nickname" id="nickname-select" required>
         <option value="">— 닉네임 선택 —</option>
       </select>
-      <div id="no-participants" style="display:none; margin-top:8px; font-family:var(--mono); font-size:0.65rem; color:var(--brass2); letter-spacing:1px;">
+      <div id="no-participants" style="display:none; margin-top:8px; font-family:var(--mono); font-size:0.76rem; color:var(--brass2); letter-spacing:1px;">
         ※ 등록된 참가자가 없습니다. <a href="register.html" style="color:var(--brass2);">참가자 등록 →</a>
       </div>
     </div>
