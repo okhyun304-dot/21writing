@@ -529,24 +529,34 @@
         grid-template-columns: 1fr;
       }
 
-      /* 랭킹: 3컬럼 → 2컬럼, 스탯은 이름 아래로 */
+      /* 랭킹: 3컬럼 유지, 스탯 컬럼 좁게 */
       .rank-row {
-        grid-template-columns: 40px 1fr;
+        grid-template-columns: 36px 1fr 76px;
         min-height: auto;
-        flex-wrap: wrap;
       }
       .rs {
-        grid-column: 2 / 3;
-        border-top: 1px solid var(--line);
-        border-left: none;
-        padding: 8px 14px 10px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
+        padding: 8px 6px;
+        border-left: 1px solid var(--line);
+        flex-direction: column;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
       }
-      .rs-row { gap: 10px; }
-      .rs-item { text-align: left; }
-      .rs-tags { justify-content: flex-start; }
+      .rs-row {
+        flex-direction: column;
+        gap: 2px;
+        align-items: center;
+        justify-content: center;
+      }
+      .rs-item { text-align: center; }
+      .rs-val { font-size: 0.78rem; }
+      .rs-lbl { font-size: 0.44rem; letter-spacing: 0.5px; }
+      .rs-tags {
+        flex-direction: column;
+        gap: 2px;
+        align-items: center;
+      }
+      .rs-tags .tag { font-size: 0.48rem; padding: 1px 4px; }
 
       /* 이름/진행바 영역 폰트 */
       .ri-name { font-size: 0.88rem; }

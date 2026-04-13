@@ -7,6 +7,7 @@ const SHEET_NAMES = {
   participants: '참가자',
   submissions:  '제출',
   hof:          '명예의전당',
+  config:       '설정',
 };
 
 // ── 헤더 정의 ──────────────────────────────────────────────────
@@ -15,6 +16,7 @@ const HEADERS = {
   submissions:  ['nickname','level','postTitle','postLink','todayComments',
                  'yesterdayViews','inquiry','revenue','revenueAmt','memo','submittedAt'],
   hof:          ['name','review','storyUrl','blogUrl','totalViews','inquiry','imgUrl','addedAt'],
+  config:       ['key','value'],
 };
 
 // ── 시트 가져오기 (없으면 생성) ────────────────────────────────
@@ -87,6 +89,16 @@ function deleteRow(key, idField, idValue) {
   }
 }
 
+// ── 설정 시트 → 키-값 맵 ──────────────────────────────────────
+function getConfigMap() {
+  const sheet  = getSheet('config');
+  const values = sheet.getDataRange().getValues();
+  if (values.length <= 1) return {};
+  const map = {};
+  values.slice(1).forEach(row => { if (row[0]) map[String(row[0])] = String(row[1] || ''); });
+  return map;
+}
+
 // ── CORS 헤더 설정 ──────────────────────────────────────────────
 function corsOutput(data) {
   return ContentService
@@ -106,6 +118,7 @@ function doGet(e) {
         participants: sheetToObjects('participants'),
         submissions:  sheetToObjects('submissions'),
         hof:          sheetToObjects('hof'),
+        config:       getConfigMap(),
       });
     }
 
@@ -137,8 +150,10 @@ function doPost(e) {
     const data   = e.parameter.data ? JSON.parse(e.parameter.data) : {};
 
     if (action === 'saveParticipant') {
-      // 참가 코드 서버 검증
-      if (data.accessCode !== '0000') {
+      // 참가 코드 서버 검증 (config 시트에서 읽음, 없으면 기본값 '0000')
+      const cfg = getConfigMap();
+      const validCode = cfg.accessCode || '0000';
+      if (data.accessCode !== validCode) {
         return corsOutput({ status: 'error', message: '참가 코드가 올바르지 않습니다.' });
       }
       upsertRow('participants', data, 'nickname');
@@ -172,6 +187,13 @@ function doPost(e) {
 
     if (action === 'deleteParticipant') {
       deleteRow('participants', 'nickname', data.nickname);
+      return corsOutput({ status: 'ok' });
+    }
+
+    if (action === 'saveConfig') {
+      Object.entries(data).forEach(([key, value]) => {
+        upsertRow('config', { key, value: String(value) }, 'key');
+      });
       return corsOutput({ status: 'ok' });
     }
 

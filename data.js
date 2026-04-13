@@ -67,6 +67,14 @@ const DB = {
         localStorage.setItem('hof', JSON.stringify(hofMap));
       }
 
+      // 챌린지 설정
+      if (d.config && typeof d.config === 'object' && d.config.startDate) {
+        localStorage.setItem('challengeConfig', JSON.stringify({
+          startDate: d.config.startDate,
+          totalDays: Number(d.config.totalDays) || 21,
+        }));
+      }
+
       console.log('[Sheets] 동기화 완료');
       return true;
     } catch (e) {

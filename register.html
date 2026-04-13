@@ -251,21 +251,43 @@
     });
   });
 
-  const ACCESS_CODE = '0000'; // 운영 시 이 값만 변경
-
-  document.getElementById('reg-form').addEventListener('submit', e => {
+  document.getElementById('reg-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.target));
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = '등록 중...';
 
-    // 코드 검증
-    if(data.accessCode !== ACCESS_CODE) {
-      document.getElementById('code-error').style.display = 'block';
-      document.getElementById('access-code').focus();
+    const data = Object.fromEntries(new FormData(e.target));
+    const entry = { ...data, registeredAt: new Date().toISOString() };
+
+    try {
+      const body = new URLSearchParams({ action: 'saveParticipant', data: JSON.stringify(entry) });
+      const res  = await fetch(DB.SHEETS_URL, { method: 'POST', body });
+      const result = await res.json();
+
+      if (result.status !== 'ok') {
+        document.getElementById('code-error').style.display = 'block';
+        document.getElementById('access-code').focus();
+        btn.disabled = false;
+        btn.textContent = '등록하기';
+        return;
+      }
+
+      // 로컬에도 저장
+      const list   = DB.getParticipants();
+      const exists = list.findIndex(p => p.nickname === entry.nickname);
+      if (exists >= 0) list[exists] = { ...list[exists], ...entry };
+      else             list.push(entry);
+      localStorage.setItem('participants', JSON.stringify(list));
+
+    } catch(err) {
+      // 네트워크 오류 시 안내
+      btn.disabled = false;
+      btn.textContent = '등록하기';
+      alert('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
       return;
     }
-    document.getElementById('code-error').style.display = 'none';
 
-    DB.saveParticipant(data);
     document.getElementById('reg-form').style.display = 'none';
     document.getElementById('done').style.display = 'block';
   });

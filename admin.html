@@ -322,6 +322,11 @@
         <input type="number" id="challenge-total-days" value="21" min="1" max="100"
           style="width:70px;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.9rem;padding:8px 12px;outline:none;text-align:center;" />
       </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);letter-spacing:1px;margin-bottom:6px;">참가 코드</div>
+        <input type="text" id="access-code-input" maxlength="20" placeholder="새 코드 입력"
+          style="width:120px;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.9rem;padding:8px 12px;outline:none;" />
+      </div>
       <div style="align-self:flex-end;">
         <button onclick="saveChallengeConfig()"
           style="background:var(--brass);border:none;color:var(--bg);font-family:var(--impact);font-size:1rem;letter-spacing:2px;padding:9px 20px;cursor:pointer;">저장</button>
@@ -637,8 +642,11 @@ async function syncFromSheets() {
 function saveChallengeConfig() {
   const startDate  = document.getElementById('challenge-start-date').value;
   const totalDays  = parseInt(document.getElementById('challenge-total-days').value) || 21;
+  const accessCode = document.getElementById('access-code-input').value.trim();
   if (!startDate) { alert('시작일을 입력하세요'); return; }
-  DB.saveChallengeConfig({ startDate, totalDays });
+  const config = { startDate, totalDays };
+  if (accessCode) config.accessCode = accessCode;
+  DB.saveChallengeConfig(config);
   const dayNum = DB.getDayNumber();
   const status = document.getElementById('challenge-status');
   status.textContent = dayNum ? `현재 D+${dayNum}일 진행 중` : '저장 완료';
