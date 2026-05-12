@@ -8,15 +8,20 @@ const SHEET_NAMES = {
   submissions:  '제출',
   hof:          '명예의전당',
   config:       '설정',
+  reports:      '기수리포트',
 };
 
 // ── 헤더 정의 ──────────────────────────────────────────────────
 const HEADERS = {
   participants: ['nickname','blogUrl','startLevel','registeredAt'],
   submissions:  ['nickname','level','postTitle','postLink','todayComments',
-                 'yesterdayViews','inquiry','revenue','revenueAmt','memo','submittedAt'],
+                 'dailyViews','inquiry','revenue','revenueAmt','memo','submittedAt'],
   hof:          ['name','review','storyUrl','blogUrl','totalViews','inquiry','imgUrl','addedAt'],
   config:       ['key','value'],
+  reports:      ['nickname','cohort','finalLevel','reportType',
+                 'totalPosts','totalViews','maxVisitors','inquiryCount','totalRevenue',
+                 'whatTried','whatResults','whatNext',
+                 'hypothesis','actualResults','rootCause','submittedAt'],
 };
 
 // ── 시트 가져오기 (없으면 생성) ────────────────────────────────
@@ -161,6 +166,27 @@ function doPost(e) {
     }
 
     if (action === 'saveSubmission') {
+      // KST 기준 오늘 날짜로 같은 닉네임 행이 있으면 대체 (upsert)
+      const sheet    = getSheet('submissions');
+      const values   = sheet.getDataRange().getValues();
+      const todayKST = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd');
+      if (values.length > 1) {
+        const headers = values[0];
+        const nickIdx = headers.indexOf('nickname');
+        const atIdx   = headers.indexOf('submittedAt');
+        for (let i = 1; i < values.length; i++) {
+          let rowDate = '';
+          try {
+            const rowAt = values[i][atIdx];
+            if (rowAt) rowDate = Utilities.formatDate(new Date(rowAt.toString()), 'Asia/Seoul', 'yyyy-MM-dd');
+          } catch(e) {}
+          if (String(values[i][nickIdx]) === String(data.nickname) && rowDate === todayKST) {
+            const row = HEADERS['submissions'].map(h => data[h] !== undefined ? data[h] : '');
+            sheet.getRange(i + 1, 1, 1, row.length).setValues([row]);
+            return corsOutput({ status: 'ok' });
+          }
+        }
+      }
       appendRow('submissions', data);
       return corsOutput({ status: 'ok' });
     }
@@ -187,6 +213,12 @@ function doPost(e) {
 
     if (action === 'deleteParticipant') {
       deleteRow('participants', 'nickname', data.nickname);
+      return corsOutput({ status: 'ok' });
+    }
+
+    if (action === 'saveReport') {
+      const entry = { ...data, submittedAt: data.submittedAt || new Date().toISOString() };
+      appendRow('reports', entry);
       return corsOutput({ status: 'ok' });
     }
 

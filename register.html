@@ -4,157 +4,271 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>참가자 등록 — 21일 글쓰기</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:     #080809;
-      --panel:  #101012;
-      --panel2: #161618;
-      --line:   #252528;
-      --line2:  #303035;
-      --dim:    #72727c;
-      --mid:    #a8a8b4;
-      --light:  #d4d4de;
-      --white:  #f2f2f6;
-      --brass:  #b88818;
-      --brass2: #e0aa28;
-      --red:    #c04040;
-      --mono: 'Share Tech Mono', monospace;
-      --impact: 'Bebas Neue', 'Noto Sans KR', sans-serif;
-      --body: 'Noto Sans KR', sans-serif;
+      --bg:       #F7F7F6;
+      --surface:  #FFFFFF;
+      --surface-2:#F0F0EE;
+      --border:   #E3E2DE;
+      --border-2: #C8C7C0;
+      --text:     #18181A;
+      --text-2:   #68676B;
+      --text-3:   #A4A3A0;
+      --hof:      #5B21B6;
+      --hof-bg:   #FAF8FF;
+      --hof-border:#DDD6FE;
+      --gold:     #92400E;
+      --gold-bg:  #FDFAF4;
+      --gold-border:#E5D8A8;
+      --silver:   #1E3A8A;
+      --silver-bg:#F5F8FF;
+      --silver-border:#BFCFE8;
+      --bronze:   #9A3412;
+      --bronze-bg:#FDF7F4;
+      --bronze-border:#EDD0C0;
+      --green:    #14532D;
+      --green-bg: #F3FBF5;
+      --green-border:#A7F3D0;
+      --red:      #991B1B;
+      --radius:   6px;
+      --radius-sm:4px;
+      --font: 'Inter', 'Noto Sans KR', sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
-      color: var(--light);
-      font-family: var(--body);
-      font-size: 15px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       word-break: keep-all;
       min-height: 100vh;
-      padding-bottom: 64px;
+      padding-bottom: 60px;
     }
+
     header {
-      background: var(--panel);
-      border-bottom: 1px solid var(--line2);
-      padding: 18px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    header h1 { font-family: var(--impact); font-size: 1.4rem; letter-spacing: 3px; color: var(--white); }
-  header h1 a { text-decoration: none; color: inherit; }
-    header h1 span { color: var(--brass2); }
-    .nav-link { font-family: var(--mono); font-size: 0.76rem; color: var(--dim); text-decoration: none; letter-spacing: 2px; }
-    .nav-link:hover { color: var(--brass2); }
-
-    .container { max-width: 600px; margin: 40px auto; padding: 0 16px; }
-    .page-title { font-family: var(--impact); font-size: 2rem; letter-spacing: 3px; color: var(--white); margin-bottom: 4px; }
-    .page-sub { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 2px; color: var(--dim); margin-bottom: 32px; }
-
-    /* 기수 배너 */
-    .cohort-banner {
-      background: var(--panel);
-      border-left: 3px solid var(--brass);
-      padding: 14px 18px;
-      margin-bottom: 28px;
+    .header-logo {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
-    .cohort-banner .c-num {
-      font-family: var(--impact);
-      font-size: 1.4rem;
-      letter-spacing: 2px;
-      color: var(--brass2);
-      margin-bottom: 2px;
-    }
-    .cohort-banner .c-period {
-      font-family: var(--mono);
+    .header-logo .num { font-size: 1.05rem; font-weight: 800; color: var(--hof); }
+    .nav-link {
       font-size: 0.78rem;
-      color: var(--dim);
-      letter-spacing: 1px;
+      font-weight: 500;
+      color: var(--text-3);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      transition: all .12s;
     }
-    .cohort-banner .c-price {
-      font-size: 0.92rem;
-      color: var(--light);
-      margin-top: 8px;
+    .nav-link:hover { color: var(--text-2); background: var(--surface-2); }
+
+    .container { max-width: 520px; margin: 32px auto; padding: 0 20px; }
+
+    .page-title { font-size: 1.5rem; font-weight: 800; color: var(--text); letter-spacing: -0.4px; margin-bottom: 4px; }
+    .page-sub   { font-size: 0.78rem; color: var(--text-3); margin-bottom: 24px; }
+
+    .form-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
     }
-    .cohort-banner .c-price strong { color: var(--brass2); }
 
-    .divider { display: flex; align-items: center; gap: 10px; margin: 28px 0 20px; }
-    .divider-label { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 3px; color: var(--dim); white-space: nowrap; text-transform: uppercase; }
-    .divider-line { flex: 1; height: 1px; background: var(--line); }
+    .sec-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px 10px;
+      border-top: 1px solid var(--border);
+    }
+    .sec-row:first-child { border-top: none; padding-top: 20px; }
+    .sec-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: var(--text-3);
+      text-transform: uppercase;
+    }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
 
-    .field { margin-bottom: 18px; }
-    .field label { display: block; font-size: 0.9rem; font-weight: 700; color: var(--light); margin-bottom: 7px; }
-    .field label .req { color: var(--brass2); margin-left: 2px; }
-    .field label .hint { font-weight: 400; font-size: 0.84rem; color: var(--dim); margin-left: 6px; }
+    .fields { padding: 0 20px; }
+    .field { margin-bottom: 14px; }
+    .field:last-child { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 5px;
+    }
+    .field label .req { color: var(--hof); margin-left: 1px; }
+    .field label .hint { font-weight: 400; font-size: 0.74rem; color: var(--text-3); margin-left: 5px; }
 
-    input[type=text], input[type=url], input[type=tel], select {
+    input[type=text], input[type=url] {
       width: 100%;
-      background: var(--panel);
-      border: 1px solid var(--line2);
-      color: var(--white);
-      font-family: var(--body);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font);
       font-size: 1rem;
-      padding: 11px 14px;
+      padding: 9px 12px;
+      min-height: 40px;
       outline: none;
-      transition: border-color .15s;
+      transition: border-color .12s, background .12s;
       -webkit-appearance: none;
-      border-radius: 0;
     }
-    input:focus, select:focus { border-color: var(--brass); }
-    select option { background: var(--panel2); }
+    input:focus { border-color: var(--hof); background: var(--surface); }
+    input::placeholder { color: var(--text-3); }
 
-    .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
-    .radio-item {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--panel); border: 1px solid var(--line2);
-      padding: 9px 16px; cursor: pointer;
-      transition: border-color .15s;
-      font-size: 0.95rem; color: var(--mid); user-select: none;
+    .field-error {
+      display: none;
+      margin-top: 5px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--red);
     }
-    .radio-item input { display: none; }
-    .radio-item.active { border-color: var(--brass); color: var(--white); }
+    .field-error.show { display: block; }
 
-    /* 동의 항목 */
-    .agree-list { display: flex; flex-direction: column; gap: 8px; }
+    /* 레벨 선택 */
+    .level-group { display: flex; gap: 6px; }
+    .level-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      min-height: 40px;
+      cursor: pointer;
+      transition: all .12s;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-3);
+      user-select: none;
+      flex: 1;
+    }
+    .level-item input { display: none; }
+    .level-item:hover:not(.active-bronze):not(.active-silver):not(.active-gold) {
+      border-color: var(--border-2);
+      color: var(--text-2);
+    }
+    .level-item.active-bronze { border-color: var(--bronze); background: var(--bronze-bg); color: var(--bronze); font-weight: 700; }
+    .level-item.active-silver { border-color: var(--silver); background: var(--silver-bg); color: var(--silver); font-weight: 700; }
+    .level-item.active-gold   { border-color: var(--gold);   background: var(--gold-bg);   color: var(--gold);   font-weight: 700; }
+
+    /* 동의 */
+    .agree-list { display: flex; flex-direction: column; gap: 6px; }
     .agree-item {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: var(--panel); border: 1px solid var(--line2);
-      padding: 12px 14px; cursor: pointer; user-select: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: all .12s;
     }
     .agree-item input[type=checkbox] { display: none; }
     .agree-box {
-      width: 16px; height: 16px; border: 1px solid var(--line2);
-      flex-shrink: 0; margin-top: 2px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.82rem; color: transparent;
-      transition: all .15s;
+      width: 16px; height: 16px;
+      border: 1px solid var(--border-2);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      color: transparent;
+      transition: all .12s;
+      background: var(--surface);
     }
-    .agree-item.active .agree-box { border-color: var(--brass); color: var(--brass2); }
-    .agree-text { font-size: 0.92rem; color: var(--mid); line-height: 1.6; }
-    .agree-item.active .agree-text { color: var(--light); }
+    .agree-item.active .agree-box { border-color: var(--hof); background: var(--hof); color: #fff; }
+    .agree-text { font-size: 0.82rem; color: var(--text-3); line-height: 1.55; }
+    .agree-item.active { border-color: var(--hof-border); background: var(--hof-bg); }
+    .agree-item.active .agree-text { color: var(--text-2); }
 
+    .submit-wrap { padding: 0 20px 20px; }
     .submit-btn {
-      width: 100%; padding: 15px;
-      background: var(--brass); color: var(--bg);
-      font-family: var(--impact); font-size: 1.1rem; letter-spacing: 3px;
-      border: none; cursor: pointer; transition: background .15s; margin-top: 32px;
+      width: 100%;
+      padding: 12px;
+      min-height: 44px;
+      background: var(--text);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background .12s;
     }
-    .submit-btn:hover { background: var(--brass2); }
-    .submit-btn:disabled { background: var(--line2); color: var(--dim); cursor: not-allowed; }
+    .submit-btn:hover { background: #333; }
+    .submit-btn:disabled { background: var(--border-2); color: var(--text-3); cursor: not-allowed; }
 
     #done { display: none; text-align: center; padding: 60px 20px; }
-    #done .done-icon { font-size: 2.5rem; margin-bottom: 16px; }
-    #done h2 { font-family: var(--impact); font-size: 1.8rem; letter-spacing: 3px; color: var(--white); margin-bottom: 8px; }
-    #done p { font-size: 0.95rem; color: var(--dim); line-height: 1.7; }
-    #done a { display: inline-block; margin-top: 24px; font-family: var(--mono); font-size: 0.84rem; letter-spacing: 2px; color: var(--brass2); text-decoration: none; }
+    .done-icon {
+      width: 52px; height: 52px;
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin: 0 auto 16px;
+    }
+    #done h2 { font-size: 1.3rem; font-weight: 800; color: var(--text); letter-spacing: -0.3px; margin-bottom: 6px; }
+    #done p { font-size: 0.84rem; color: var(--text-3); line-height: 1.7; }
+    #done a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+    }
+    #done a:hover { background: var(--surface-2); }
+
+    @media (max-width: 600px) {
+      header { padding: 0 14px; height: 48px; }
+      .container { margin: 20px auto; padding: 0 14px; }
+      input[type=text], input[type=url] { font-size: 16px; }
+      .level-group { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1><a href="index.html"><span>21</span>일 글쓰기</a></h1>
+  <a href="index.html" class="header-logo"><span class="num">21</span>일 글쓰기</a>
   <a class="nav-link" href="index.html">← 대시보드</a>
 </header>
 
@@ -162,61 +276,70 @@
   <div class="page-title">참가자 등록</div>
   <div class="page-sub">기수 시작 전 1회 작성하세요</div>
 
-  <form id="reg-form">
+  <div class="form-wrap">
+    <form id="reg-form">
 
-    <div class="divider"><span class="divider-label">참가 코드</span><div class="divider-line"></div></div>
-
-    <div class="field">
-      <label>참가 코드<span class="req">*</span><span class="hint">운영진에게 받은 4자리 코드</span></label>
-      <input type="text" name="accessCode" id="access-code" placeholder="참가 코드 입력" maxlength="10" required autocomplete="off" />
-      <div id="code-error" style="display:none; margin-top:6px; font-family:var(--mono); font-size:0.76rem; color:var(--red); letter-spacing:1px;">코드가 올바르지 않습니다.</div>
-    </div>
-
-    <div class="divider"><span class="divider-label">기본 정보</span><div class="divider-line"></div></div>
-
-    <div class="field">
-      <label>닉네임<span class="req">*</span><span class="hint">대시보드에 표시될 이름</span></label>
-      <input type="text" name="nickname" placeholder="예: 김마케터" required maxlength="10" />
-    </div>
-
-    <div class="field">
-      <label>블로그 URL<span class="req">*</span></label>
-      <input type="url" name="blogUrl" placeholder="https://blog.naver.com/..." required />
-    </div>
-
-    <div class="divider"><span class="divider-label">시작 레벨</span><div class="divider-line"></div></div>
-
-    <div class="field">
-      <label>시작 레벨<span class="req">*</span></label>
-      <div class="radio-group" id="startlevel-group">
-        <label class="radio-item"><input type="radio" name="startLevel" value="브론즈" required>🥉 브론즈</label>
-        <label class="radio-item"><input type="radio" name="startLevel" value="실버">🥈 실버</label>
-        <label class="radio-item"><input type="radio" name="startLevel" value="골드">🥇 골드</label>
+      <div class="sec-row"><span class="sec-label">참가 코드</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="field">
+          <label>참가 코드<span class="req">*</span><span class="hint">운영진에게 받은 코드</span></label>
+          <input type="text" name="accessCode" id="access-code" placeholder="참가 코드 입력" maxlength="10" required autocomplete="off" />
+          <div id="code-error" class="field-error">코드가 올바르지 않습니다.</div>
+        </div>
       </div>
-    </div>
 
-    <div class="divider"><span class="divider-label">동의 사항</span><div class="divider-line"></div></div>
+      <div class="sec-row"><span class="sec-label">기본 정보</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="field">
+          <label>닉네임<span class="req">*</span><span class="hint">대시보드에 표시될 이름</span></label>
+          <input type="text" name="nickname" placeholder="예: 김마케터" required maxlength="10" />
+        </div>
+        <div class="field">
+          <label>블로그 URL<span class="req">*</span></label>
+          <input type="url" name="blogUrl" placeholder="https://blog.naver.com/..." required />
+        </div>
+      </div>
 
-    <div class="agree-list">
-      <label class="agree-item">
-        <input type="checkbox" name="agree1" required />
-        <div class="agree-box">✓</div>
-        <div class="agree-text">21일 동안 매일 글을 발행하고, 종료 후 리포트를 제출하겠습니다.</div>
-      </label>
-      <label class="agree-item">
-        <input type="checkbox" name="agree2" required />
-        <div class="agree-box">✓</div>
-        <div class="agree-text">리포트 미제출 또는 KPI 미달성 시 보증금이 몰수됨을 동의합니다.</div>
-      </label>
-      <label class="agree-item">
-        <input type="checkbox" name="agree3" required />
-        <div class="agree-box">✓</div>
-        <div class="agree-text">성과 수치(조회수, 방문자, 매출 여부)가 전체 참가자에게 공개됨을 동의합니다.</div>
-      </label>
-    </div>
+      <div class="sec-row"><span class="sec-label">시작 레벨</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="field">
+          <label>시작 레벨<span class="req">*</span></label>
+          <div class="level-group" id="startlevel-group">
+            <label class="level-item" data-level="브론즈"><input type="radio" name="startLevel" value="브론즈" required>🥉 브론즈</label>
+            <label class="level-item" data-level="실버"><input type="radio" name="startLevel" value="실버">🥈 실버</label>
+            <label class="level-item" data-level="골드"><input type="radio" name="startLevel" value="골드">🥇 골드</label>
+          </div>
+        </div>
+      </div>
 
-    <button type="submit" class="submit-btn" id="submit-btn">등록하기</button>
-  </form>
+      <div class="sec-row"><span class="sec-label">동의 사항</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="field">
+          <div class="agree-list">
+            <label class="agree-item">
+              <input type="checkbox" name="agree1" required />
+              <div class="agree-box">✓</div>
+              <div class="agree-text">21일 동안 매일 글을 발행하고, 종료 후 리포트를 제출하겠습니다.</div>
+            </label>
+            <label class="agree-item">
+              <input type="checkbox" name="agree2" required />
+              <div class="agree-box">✓</div>
+              <div class="agree-text">리포트 미제출 또는 KPI 미달성 시 보증금이 몰수됨을 동의합니다.</div>
+            </label>
+            <label class="agree-item">
+              <input type="checkbox" name="agree3" required />
+              <div class="agree-box">✓</div>
+              <div class="agree-text">성과 수치(조회수, 방문자, 매출 여부)가 전체 참가자에게 공개됨을 동의합니다.</div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="submit-btn" id="submit-btn">등록하기</button>
+      </div>
+    </form>
+  </div>
 
   <div id="done">
     <div class="done-icon">✓</div>
@@ -228,21 +351,19 @@
 
 <script src="data.js"></script>
 <script>
-  function initRadioGroup(id) {
-    const g = document.getElementById(id);
-    if(!g) return;
-    g.querySelectorAll('.radio-item').forEach(item => {
-      item.addEventListener('click', () => {
-        g.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-        item.querySelector('input').checked = true;
-        item.querySelector('input').dispatchEvent(new Event('change',{bubbles:true}));
-      });
-    });
-  }
-  initRadioGroup('startlevel-group');
+  const LEVEL_ACTIVE = { '브론즈': 'active-bronze', '실버': 'active-silver', '골드': 'active-gold' };
 
-  // 동의 체크박스
+  document.getElementById('startlevel-group').querySelectorAll('.level-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.level-item').forEach(i =>
+        i.classList.remove('active-bronze','active-silver','active-gold')
+      );
+      const level = item.dataset.level;
+      if(level) item.classList.add(LEVEL_ACTIVE[level]);
+      item.querySelector('input').checked = true;
+    });
+  });
+
   document.querySelectorAll('.agree-item').forEach(item => {
     item.addEventListener('click', () => {
       const cb = item.querySelector('input[type=checkbox]');
@@ -254,36 +375,31 @@
   document.getElementById('reg-form').addEventListener('submit', async e => {
     e.preventDefault();
     const btn = document.getElementById('submit-btn');
+    const codeErr = document.getElementById('code-error');
+    codeErr.classList.remove('show');
     btn.disabled = true;
     btn.textContent = '등록 중...';
 
-    const data = Object.fromEntries(new FormData(e.target));
+    const data  = Object.fromEntries(new FormData(e.target));
     const entry = { ...data, registeredAt: new Date().toISOString() };
 
     try {
-      const body = new URLSearchParams({ action: 'saveParticipant', data: JSON.stringify(entry) });
-      const res  = await fetch(DB.SHEETS_URL, { method: 'POST', body });
+      const body   = new URLSearchParams({ action: 'saveParticipant', data: JSON.stringify(entry) });
+      const res    = await fetch(DB.SHEETS_URL, { method: 'POST', body });
       const result = await res.json();
-
-      if (result.status !== 'ok') {
-        document.getElementById('code-error').style.display = 'block';
+      if(result.status !== 'ok') {
+        codeErr.classList.add('show');
         document.getElementById('access-code').focus();
-        btn.disabled = false;
-        btn.textContent = '등록하기';
+        btn.disabled = false; btn.textContent = '등록하기';
         return;
       }
-
-      // 로컬에도 저장
       const list   = DB.getParticipants();
       const exists = list.findIndex(p => p.nickname === entry.nickname);
-      if (exists >= 0) list[exists] = { ...list[exists], ...entry };
-      else             list.push(entry);
+      if(exists >= 0) list[exists] = { ...list[exists], ...entry };
+      else            list.push(entry);
       localStorage.setItem('participants', JSON.stringify(list));
-
     } catch(err) {
-      // 네트워크 오류 시 안내
-      btn.disabled = false;
-      btn.textContent = '등록하기';
+      btn.disabled = false; btn.textContent = '등록하기';
       alert('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
       return;
     }
@@ -292,9 +408,8 @@
     document.getElementById('done').style.display = 'block';
   });
 
-  // 코드 입력 시 에러 메시지 숨김
   document.getElementById('access-code').addEventListener('input', () => {
-    document.getElementById('code-error').style.display = 'none';
+    document.getElementById('code-error').classList.remove('show');
   });
 </script>
 </body>

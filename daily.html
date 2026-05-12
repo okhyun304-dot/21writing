@@ -4,367 +4,346 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>일일 제출 — 21일 글쓰기</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:     #080809;
-      --panel:  #101012;
-      --panel2: #161618;
-      --line:   #252528;
-      --line2:  #303035;
-      --dim:    #72727c;
-      --mid:    #a8a8b4;
-      --light:  #d4d4de;
-      --white:  #f2f2f6;
-      --brass:  #b88818;
-      --brass2: #e0aa28;
-      --green:  #5aaa6a;
-      --red:    #c04040;
-      --mono: 'Share Tech Mono', monospace;
-      --impact: 'Bebas Neue', 'Noto Sans KR', sans-serif;
-      --body: 'Noto Sans KR', sans-serif;
+      --bg:       #F7F7F6;
+      --surface:  #FFFFFF;
+      --surface-2:#F0F0EE;
+      --border:   #E3E2DE;
+      --border-2: #C8C7C0;
+      --text:     #18181A;
+      --text-2:   #68676B;
+      --text-3:   #A4A3A0;
+      --hof:      #5B21B6;
+      --hof-bg:   #FAF8FF;
+      --hof-border:#DDD6FE;
+      --gold:     #92400E;
+      --gold-bg:  #FDFAF4;
+      --green:    #14532D;
+      --green-bg: #F3FBF5;
+      --green-border:#A7F3D0;
+      --red:      #991B1B;
+      --radius:   6px;
+      --radius-sm:4px;
+      --font: 'Inter', 'Noto Sans KR', sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
-      color: var(--light);
-      font-family: var(--body);
-      font-size: 15px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       word-break: keep-all;
       min-height: 100vh;
-      padding-bottom: 64px;
+      padding-bottom: 60px;
     }
 
-    /* 헤더 */
     header {
-      background: var(--panel);
-      border-bottom: 1px solid var(--line2);
-      padding: 18px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    header h1 {
-      font-family: var(--impact);
-      font-size: 1.4rem;
-      letter-spacing: 3px;
-      color: var(--white);
-    }
-    header h1 span { color: var(--brass2); }
-    .nav-link {
-      font-family: var(--mono);
-      font-size: 0.76rem;
-      color: var(--dim);
+    .header-logo {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
       text-decoration: none;
-      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
-    .nav-link:hover { color: var(--brass2); }
+    .header-logo .num { font-size: 1.05rem; font-weight: 800; color: var(--hof); }
+    .nav-link {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-3);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      transition: all .12s;
+    }
+    .nav-link:hover { color: var(--text-2); background: var(--surface-2); }
 
-    /* 폼 컨테이너 */
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
+    .container { max-width: 520px; margin: 32px auto; padding: 0 20px; }
 
     .page-title {
-      font-family: var(--impact);
-      font-size: 2rem;
-      letter-spacing: 3px;
-      color: var(--white);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.4px;
       margin-bottom: 4px;
     }
     .page-sub {
-      font-family: var(--mono);
-      font-size: 0.76rem;
-      letter-spacing: 2px;
-      color: var(--dim);
-      margin-bottom: 32px;
+      font-size: 0.78rem;
+      color: var(--text-3);
+      margin-bottom: 24px;
     }
-    .page-sub span {
-      color: var(--brass2);
+    .page-sub .accent { color: var(--hof); font-weight: 600; }
+
+    /* Form */
+    .form-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
     }
 
-    /* 구분선 */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 28px 0 20px;
-    }
-    .divider-label {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 3px;
-      color: var(--dim);
-      white-space: nowrap;
-      text-transform: uppercase;
-    }
-    .divider-line { flex: 1; height: 1px; background: var(--line); }
-
-    /* 필드 */
-    .field { margin-bottom: 18px; }
-    .field label {
-      display: block;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--light);
-      margin-bottom: 7px;
-    }
-    .field label .req { color: var(--brass2); margin-left: 2px; }
-    .field label .hint {
-      font-weight: 400;
-      font-size: 0.84rem;
-      color: var(--dim);
-      margin-left: 6px;
-    }
-
-    input[type=text], input[type=url], input[type=number], select, textarea {
-      width: 100%;
-      background: var(--panel);
-      border: 1px solid var(--line2);
-      color: var(--white);
-      font-family: var(--body);
-      font-size: 1rem; /* minimum 16px prevents iOS auto-zoom */
-      padding: 11px 14px;
-      min-height: 44px; /* touch target minimum */
-      outline: none;
-      transition: border-color .15s;
-      -webkit-appearance: none;
-      border-radius: 0;
-    }
-    input[type=text]:focus, input[type=url]:focus,
-    input[type=number]:focus, select:focus, textarea:focus {
-      border-color: var(--brass);
-    }
-    textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-    select { cursor: pointer; }
-    select option { background: var(--panel2); }
-
-    /* 라디오/체크박스 그룹 */
-    .radio-group, .check-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .radio-item, .check-item {
+    .sec-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: var(--panel);
-      border: 1px solid var(--line2);
-      padding: 9px 16px;
-      min-height: 44px; /* touch target minimum */
-      cursor: pointer;
-      transition: border-color .15s;
-      font-size: 0.95rem;
-      color: var(--mid);
-      user-select: none;
+      padding: 14px 20px 10px;
+      border-top: 1px solid var(--border);
     }
-    .radio-item input, .check-item input { display: none; }
-    .radio-item.active, .check-item.active {
-      border-color: var(--brass);
-      color: var(--white);
+    .sec-row:first-child { border-top: none; padding-top: 20px; }
+    .sec-label {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: var(--text-3);
+      text-transform: uppercase;
     }
-    .radio-item:hover, .check-item:hover { border-color: var(--line2); color: var(--light); }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
 
-    /* 조건부 필드 */
+    .fields { padding: 0 20px; }
+    .field { margin-bottom: 14px; }
+    .field:last-child { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-2);
+      margin-bottom: 5px;
+    }
+    .field label .req { color: var(--hof); margin-left: 1px; }
+    .field label .hint { font-weight: 400; font-size: 0.74rem; color: var(--text-3); margin-left: 5px; }
+
+    input[type=text], input[type=url], input[type=number], select, textarea {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 1rem;
+      padding: 9px 12px;
+      min-height: 40px;
+      outline: none;
+      transition: border-color .12s, background .12s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--hof);
+      background: var(--surface);
+    }
+    input::placeholder, textarea::placeholder { color: var(--text-3); }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    select { cursor: pointer; }
+    select option { background: var(--surface); }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .radio-group { display: flex; gap: 6px; }
+    .radio-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      min-height: 40px;
+      cursor: pointer;
+      transition: all .12s;
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--text-3);
+      user-select: none;
+      flex: 1;
+    }
+    .radio-item input { display: none; }
+    .radio-item.active { border-color: var(--hof); background: var(--hof-bg); color: var(--hof); font-weight: 600; }
+    .radio-item:hover:not(.active) { border-color: var(--border-2); color: var(--text-2); }
+
     .conditional { display: none; }
     .conditional.show { display: block; }
 
-    /* 2열 그리드 */
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-    /* 제출 버튼 */
+    .submit-wrap { padding: 0 20px 20px; }
     .submit-btn {
       width: 100%;
-      padding: 15px;
-      min-height: 52px; /* mobile-friendly tall button */
-      background: var(--brass);
-      color: var(--bg);
-      font-family: var(--impact);
-      font-size: 1.1rem;
-      letter-spacing: 3px;
+      padding: 12px;
+      min-height: 44px;
+      background: var(--text);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 700;
       border: none;
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: background .15s;
-      margin-top: 32px;
+      transition: background .12s;
     }
-    .submit-btn:hover { background: var(--brass2); }
+    .submit-btn:hover { background: #333; }
 
-    /* 완료 메시지 */
-    #done {
-      display: none;
-      text-align: center;
-      padding: 60px 20px;
+    #done { display: none; text-align: center; padding: 60px 20px; }
+    .done-icon {
+      width: 52px; height: 52px;
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin: 0 auto 16px;
     }
-    #done .done-icon { font-size: 2.5rem; margin-bottom: 16px; }
-    #done h2 {
-      font-family: var(--impact);
-      font-size: 1.8rem;
-      letter-spacing: 3px;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-    #done p { font-size: 0.95rem; color: var(--dim); line-height: 1.7; }
+    #done h2 { font-size: 1.3rem; font-weight: 800; color: var(--text); letter-spacing: -0.3px; margin-bottom: 6px; }
+    #done p { font-size: 0.84rem; color: var(--text-3); line-height: 1.7; }
     #done a {
-      display: inline-block;
-      margin-top: 24px;
-      font-family: var(--mono);
-      font-size: 0.84rem;
-      letter-spacing: 2px;
-      color: var(--brass2);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
       text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
     }
+    #done a:hover { background: var(--surface-2); }
 
-    /* ══ 모바일 최적화 ══ */
+    /* ── Already-submitted banner ── */
+    .already-bar {
+      display: none;
+      background: #EEF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 0.82rem;
+      color: #1E40AF;
+      line-height: 1.6;
+    }
+    .already-bar.show { display: block; }
+    .already-bar strong { font-weight: 700; }
+
     @media (max-width: 600px) {
-      body { padding-bottom: 80px; }
-
-      header {
-        padding: 14px 16px;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      header h1 { font-size: 1.2rem; }
-
-      .container {
-        margin: 24px auto;
-        padding: 0 14px;
-      }
-
-      .page-title { font-size: 1.6rem; }
-      .page-sub { margin-bottom: 24px; }
-
-      /* 입력 필드: 16px 강제 — iOS 자동줌 방지 */
-      input[type=text], input[type=url], input[type=number], select, textarea {
-        font-size: 16px;
-        padding: 13px 14px;
-        min-height: 48px;
-      }
-
-      /* 라디오 그룹: 전체 너비 버튼으로 변환 */
-      .radio-group, .check-group {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .radio-item, .check-item {
-        width: 100%;
-        justify-content: center;
-        min-height: 48px;
-        font-size: 0.95rem;
-        padding: 12px 16px;
-      }
-
-      /* 2열 그리드 → 1열 */
-      .grid2 {
-        grid-template-columns: 1fr;
-        gap: 0;
-      }
-
-      /* 제출 버튼 */
-      .submit-btn {
-        min-height: 56px;
-        font-size: 1.15rem;
-        margin-top: 24px;
-      }
-
-      .divider { margin: 22px 0 16px; }
-      .field { margin-bottom: 16px; }
+      header { padding: 0 14px; height: 48px; }
+      .container { margin: 20px auto; padding: 0 14px; }
+      input[type=text], input[type=url], input[type=number], select, textarea { font-size: 16px; }
+      .radio-group { flex-direction: column; }
+      .grid2 { grid-template-columns: 1fr; gap: 0; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1><a href="index.html" style="text-decoration:none;color:inherit"><span>21</span>일 글쓰기</a></h1>
+  <a href="index.html" class="header-logo"><span class="num">21</span>일 글쓰기</a>
   <a class="nav-link" href="index.html">← 대시보드</a>
 </header>
 
 <div class="container">
   <div class="page-title">일일 제출</div>
-  <div class="page-sub">오늘의 활동을 기록하세요 · <span id="today-date"></span></div>
+  <div class="page-sub">오늘의 활동을 기록하세요 · <span class="accent" id="today-date"></span></div>
 
-  <form id="daily-form">
+  <div id="already-bar" class="already-bar">
+    📝 <strong>오늘 이미 제출한 기록이 있습니다.</strong><br>
+    수정 후 다시 제출하면 기록이 업데이트됩니다.
+  </div>
 
-    <!-- 기본 정보 -->
-    <div class="divider"><span class="divider-label">기본 정보</span><div class="divider-line"></div></div>
+  <div class="form-wrap">
+    <form id="daily-form">
 
-    <div class="field">
-      <label>닉네임<span class="req">*</span></label>
-      <select name="nickname" id="nickname-select" required>
-        <option value="">— 닉네임 선택 —</option>
-      </select>
-      <div id="no-participants" style="display:none; margin-top:8px; font-family:var(--mono); font-size:0.76rem; color:var(--brass2); letter-spacing:1px;">
-        ※ 등록된 참가자가 없습니다. <a href="register.html" style="color:var(--brass2);">참가자 등록 →</a>
-      </div>
-    </div>
-    <!-- 레벨은 등록 정보에서 자동 설정 -->
-    <input type="hidden" name="level" id="hidden-level" value="브론즈" />
-
-    <!-- 오늘 글 -->
-    <div class="divider"><span class="divider-label">오늘 글</span><div class="divider-line"></div></div>
-
-    <div class="field">
-      <label>글 제목<span class="req">*</span></label>
-      <input type="text" name="postTitle" placeholder="오늘 발행한 글 제목" required />
-    </div>
-
-    <div class="field">
-      <label>글 링크<span class="req">*</span></label>
-      <input type="url" name="postLink" placeholder="https://blog.naver.com/..." required />
-    </div>
-
-    <!-- 활동 지표 (전 레벨 공통) -->
-    <div class="divider"><span class="divider-label">오늘 활동 지표</span><div class="divider-line"></div></div>
-
-    <div class="grid2">
-      <div class="field">
-        <label>오늘 단 댓글 수<span class="req">*</span><span class="hint">멤버 블로그에 남긴 댓글</span></label>
-        <input type="number" name="todayComments" placeholder="0" min="0" required />
-      </div>
-      <div class="field">
-        <label>어제 조회수<span class="req">*</span><span class="hint">하루치만 입력</span></label>
-        <input type="number" name="dailyViews" placeholder="0" min="0" required />
-      </div>
-    </div>
-
-    <!-- 문의/매출 (전 레벨 공통) -->
-    <div class="divider"><span class="divider-label">문의 · 매출</span><div class="divider-line"></div></div>
-
-    <div class="grid2">
-      <div class="field">
-        <label>외부 문의 발생 여부</label>
-        <div class="radio-group" id="inquiry-group">
-          <label class="radio-item"><input type="radio" name="inquiry" value="X" checked>없음</label>
-          <label class="radio-item"><input type="radio" name="inquiry" value="O">발생</label>
+      <div class="sec-row"><span class="sec-label">기본 정보</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="field">
+          <label>닉네임<span class="req">*</span></label>
+          <select name="nickname" id="nickname-select" required>
+            <option value="">— 닉네임 선택 —</option>
+          </select>
+          <div id="no-participants" style="display:none; margin-top:6px; font-size:0.74rem; color:var(--gold);">
+            ※ 등록된 참가자가 없습니다. <a href="register.html" style="color:var(--hof);">참가자 등록 →</a>
+          </div>
         </div>
       </div>
-      <div class="field">
-        <label>매출 발생 여부</label>
-        <div class="radio-group" id="revenue-group">
-          <label class="radio-item"><input type="radio" name="revenue" value="X" checked>없음</label>
-          <label class="radio-item"><input type="radio" name="revenue" value="O">발생</label>
+      <input type="hidden" name="level" id="hidden-level" value="브론즈" />
+
+      <div class="sec-row"><span class="sec-label">오늘 글</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="field">
+          <label>글 제목<span class="req">*</span></label>
+          <input type="text" name="postTitle" placeholder="오늘 발행한 글 제목" required />
+        </div>
+        <div class="field">
+          <label>글 링크<span class="req">*</span></label>
+          <input type="url" name="postLink" placeholder="https://blog.naver.com/..." required />
         </div>
       </div>
-    </div>
 
-    <div class="field conditional" id="section-revenue-amt">
-      <label>매출 금액 (원)<span class="hint">숫자만 입력</span></label>
-      <input type="number" name="revenueAmt" placeholder="0" min="0" />
-    </div>
+      <div class="sec-row"><span class="sec-label">활동 지표</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="grid2">
+          <div class="field">
+            <label>오늘 단 댓글 수<span class="req">*</span><span class="hint">멤버 블로그에 남긴 댓글</span></label>
+            <input type="number" name="todayComments" placeholder="0" min="0" required />
+          </div>
+          <div class="field">
+            <label>어제 조회수<span class="req">*</span><span class="hint">하루치</span></label>
+            <input type="number" name="dailyViews" placeholder="0" min="0" required />
+          </div>
+        </div>
+      </div>
 
-    <!-- 한줄 메모 -->
-    <div class="divider"><span class="divider-label">오늘의 메모</span><div class="divider-line"></div></div>
-    <div class="field">
-      <label>오늘 특이사항 <span class="hint">선택 · 시도한 것, 느낀 점 등</span></label>
-      <textarea name="memo" placeholder="예: 제목을 바꿨더니 유입이 달라졌다. / 댓글 질문형으로 바꿨다."></textarea>
-    </div>
+      <div class="sec-row"><span class="sec-label">문의 · 매출</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="grid2">
+          <div class="field">
+            <label>외부 문의 발생 여부</label>
+            <div class="radio-group" id="inquiry-group">
+              <label class="radio-item"><input type="radio" name="inquiry" value="X" checked>없음</label>
+              <label class="radio-item"><input type="radio" name="inquiry" value="O">발생</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>매출 발생 여부</label>
+            <div class="radio-group" id="revenue-group">
+              <label class="radio-item"><input type="radio" name="revenue" value="X" checked>없음</label>
+              <label class="radio-item"><input type="radio" name="revenue" value="O">발생</label>
+            </div>
+          </div>
+        </div>
+        <div class="field conditional" id="section-revenue-amt">
+          <label>매출 금액 (원)<span class="hint">숫자만 입력</span></label>
+          <input type="number" name="revenueAmt" placeholder="0" min="0" />
+        </div>
+      </div>
 
-    <button type="submit" class="submit-btn">제출하기</button>
-  </form>
+      <div class="sec-row"><span class="sec-label">메모</span><div class="sec-line"></div></div>
+      <div class="fields">
+        <div class="field">
+          <label>오늘 특이사항<span class="hint">선택</span></label>
+          <textarea name="memo" placeholder="시도한 것, 느낀 점 등"></textarea>
+        </div>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="submit-btn">제출하기</button>
+      </div>
+    </form>
+  </div>
 
   <div id="done">
     <div class="done-icon">✓</div>
@@ -376,18 +355,16 @@
 
 <script src="data.js"></script>
 <script>
-  // 오늘 날짜
-  const today = new Date();
   document.getElementById('today-date').textContent =
-    today.toLocaleDateString('ko-KR', {month:'long', day:'numeric', weekday:'long'});
+    new Date().toLocaleDateString('ko-KR', {month:'long', day:'numeric', weekday:'long'});
 
-  // 라디오 커스텀 스타일
-  function initRadioGroup(groupId) {
-    const group = document.getElementById(groupId);
-    if(!group) return;
-    group.querySelectorAll('.radio-item').forEach(item => {
+  // ── 라디오 그룹 초기화 ──────────────────────────────────────────
+  function initRadioGroup(id) {
+    const g = document.getElementById(id);
+    if(!g) return;
+    g.querySelectorAll('.radio-item').forEach(item => {
       item.addEventListener('click', () => {
-        group.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
+        g.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
         item.classList.add('active');
         item.querySelector('input').checked = true;
         item.querySelector('input').dispatchEvent(new Event('change', {bubbles:true}));
@@ -396,66 +373,128 @@
   }
   initRadioGroup('inquiry-group');
   initRadioGroup('revenue-group');
-
-  // 디폴트 선택 항목에 active 클래스 적용
   ['inquiry-group','revenue-group'].forEach(id => {
     const g = document.getElementById(id);
     if(!g) return;
-    const checked = g.querySelector('input[type=radio]:checked');
+    const checked = g.querySelector('input:checked');
     if(checked) checked.closest('.radio-item').classList.add('active');
   });
 
-  // 매출 발생 시 금액 필드 표시
   document.querySelectorAll('input[name="revenue"]').forEach(r => {
     r.addEventListener('change', () => {
       document.getElementById('section-revenue-amt').classList.toggle('show', r.value === 'O');
     });
   });
 
-  // 닉네임 드롭다운 채우기
-  const participants = DB.getParticipants();
+  // ── 참가자 드롭다운 ─────────────────────────────────────────────
+  let participants = DB.getParticipants();
   const nicknameSelect = document.getElementById('nickname-select');
-  const hiddenLevel = document.getElementById('hidden-level');
+  const hiddenLevel    = document.getElementById('hidden-level');
+  const submitBtn      = document.querySelector('.submit-btn');
+  const alreadyBar     = document.getElementById('already-bar');
+  const form           = document.getElementById('daily-form');
 
-  function applyParticipantLevel(nickname) {
+  function applyLevel(nickname) {
     const p = participants.find(x => x.nickname === nickname);
     if(p) hiddenLevel.value = p.startLevel || '브론즈';
   }
 
-  if(participants.length === 0) {
-    document.getElementById('no-participants').style.display = 'block';
-    nicknameSelect.disabled = true;
-  } else {
-    participants.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.nickname;
-      opt.textContent = p.nickname;
-      nicknameSelect.appendChild(opt);
+  // 라디오 버튼 값 세팅 헬퍼
+  function setRadio(name, value) {
+    const inputs = form.querySelectorAll(`input[name="${name}"]`);
+    const groupId = name === 'inquiry' ? 'inquiry-group' : 'revenue-group';
+    const g = document.getElementById(groupId);
+    inputs.forEach(inp => {
+      inp.checked = (inp.value === value);
+      inp.closest('.radio-item').classList.toggle('active', inp.value === value);
     });
+    // revenue-amt 표시 여부
+    if (name === 'revenue') {
+      document.getElementById('section-revenue-amt').classList.toggle('show', value === 'O');
+    }
   }
 
-  // 이전 입력값 복원 (닉네임만)
+  // 오늘 기존 제출 확인 및 폼 채우기
+  function checkExistingSubmission(nickname) {
+    if (!nickname) { alreadyBar.classList.remove('show'); submitBtn.textContent = '제출하기'; return; }
+    const subs  = DB.getSubmissions();
+    const today = DB.kstDateStr();
+    const existing = subs.find(s => s.nickname === nickname && DB.toKSTDate(s.submittedAt) === today);
+    if (existing) {
+      alreadyBar.classList.add('show');
+      submitBtn.textContent = '기록 수정';
+      // 폼 자동 채우기
+      const f = form.elements;
+      if (f.postTitle)     f.postTitle.value     = existing.postTitle     || '';
+      if (f.postLink)      f.postLink.value      = existing.postLink      || '';
+      if (f.todayComments) f.todayComments.value = existing.todayComments || '';
+      if (f.dailyViews)    f.dailyViews.value    = existing.dailyViews    || '';
+      if (f.revenueAmt)    f.revenueAmt.value    = existing.revenueAmt    || '';
+      if (f.memo)          f.memo.value          = existing.memo          || '';
+      setRadio('inquiry', existing.inquiry || 'X');
+      setRadio('revenue', existing.revenue || 'X');
+    } else {
+      alreadyBar.classList.remove('show');
+      submitBtn.textContent = '제출하기';
+    }
+  }
+
+  function buildParticipantList() {
+    // 기존 옵션 초기화 (첫 번째 placeholder 제외)
+    while (nicknameSelect.options.length > 1) nicknameSelect.remove(1);
+    participants = DB.getParticipants();
+    if (participants.length === 0) {
+      document.getElementById('no-participants').style.display = 'block';
+      nicknameSelect.disabled = true;
+    } else {
+      document.getElementById('no-participants').style.display = 'none';
+      nicknameSelect.disabled = false;
+      participants.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.nickname;
+        opt.textContent = p.nickname;
+        nicknameSelect.appendChild(opt);
+      });
+    }
+  }
+
+  buildParticipantList();
+
   const last = JSON.parse(localStorage.getItem('lastDaily') || '{}');
-  if(last.nickname) {
+  if (last.nickname) {
     nicknameSelect.value = last.nickname;
-    applyParticipantLevel(last.nickname);
+    applyLevel(last.nickname);
+    checkExistingSubmission(last.nickname);
   }
 
-  // 닉네임 선택 시 레벨 자동 반영
   nicknameSelect.addEventListener('change', () => {
-    applyParticipantLevel(nicknameSelect.value);
+    applyLevel(nicknameSelect.value);
+    checkExistingSubmission(nicknameSelect.value);
   });
 
-  // 폼 제출
-  document.getElementById('daily-form').addEventListener('submit', e => {
+  // ── 백그라운드 시트 동기화 ──────────────────────────────────────
+  (async () => {
+    const ok = await DB.pullFromSheets();
+    if (ok) {
+      buildParticipantList();
+      // 선택된 닉네임이 있으면 기존 제출 재확인
+      if (nicknameSelect.value) {
+        applyLevel(nicknameSelect.value);
+        checkExistingSubmission(nicknameSelect.value);
+      }
+    }
+  })();
+
+  // ── 폼 제출 ────────────────────────────────────────────────────
+  form.addEventListener('submit', e => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
+    submitBtn.textContent = '저장 중...';
+    submitBtn.disabled = true;
     DB.saveSubmission(data);
-    // 다음 방문을 위해 기억할 값 저장
-    localStorage.setItem('lastDaily', JSON.stringify({
-      nickname: data.nickname,
-    }));
-    document.getElementById('daily-form').style.display = 'none';
+    localStorage.setItem('lastDaily', JSON.stringify({ nickname: data.nickname }));
+    form.style.display = 'none';
+    alreadyBar.classList.remove('show');
     document.getElementById('done').style.display = 'block';
   });
 </script>

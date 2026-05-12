@@ -69,10 +69,12 @@ const DB = {
 
       // 챌린지 설정
       if (d.config && typeof d.config === 'object' && d.config.startDate) {
-        localStorage.setItem('challengeConfig', JSON.stringify({
+        const cfg = {
           startDate: d.config.startDate,
           totalDays: Number(d.config.totalDays) || 21,
-        }));
+        };
+        if (d.config.accessCode) cfg.accessCode = d.config.accessCode;
+        localStorage.setItem('challengeConfig', JSON.stringify(cfg));
       }
 
       console.log('[Sheets] 동기화 완료');
@@ -115,10 +117,29 @@ const DB = {
 
   saveSubmission(data) {
     const list  = this.getSubmissions();
+    const today = this.kstDateStr();
     const entry = { ...data, submittedAt: new Date().toISOString() };
-    list.push(entry);
+    // 오늘 같은 닉네임 제출이 있으면 대체, 없으면 추가
+    const idx = list.findIndex(s =>
+      s.nickname === data.nickname && this.toKSTDate(s.submittedAt) === today
+    );
+    if (idx >= 0) list[idx] = entry;
+    else          list.push(entry);
     localStorage.setItem('submissions', JSON.stringify(list));
     this._post('saveSubmission', entry);
+  },
+
+  // ── 기수 종료 리포트 ─────────────────────────────────────────
+  saveReport(data) {
+    const list  = JSON.parse(localStorage.getItem('reports') || '[]');
+    const entry = { ...data, submittedAt: new Date().toISOString() };
+    list.push(entry);
+    localStorage.setItem('reports', JSON.stringify(list));
+    this._post('saveReport', entry);
+  },
+
+  getReports() {
+    return JSON.parse(localStorage.getItem('reports') || '[]');
   },
 
   // ── 명예의전당 ───────────────────────────────────────────────
@@ -176,7 +197,7 @@ const DB = {
                        })),
         totalPosts:    mine.length,
         totalComments: mine.reduce((a, s) => a + (Number(s.todayComments) || 0), 0),
-        totalViews:    mine.reduce((a, s) => a + (Number(s.yesterdayViews) || 0), 0),
+        totalViews:    mine.reduce((a, s) => a + (Number(s.dailyViews) || Number(s.yesterdayViews) || 0), 0),
         inquiry:       mine.some(s => s.inquiry === 'O') ? 'O' : 'X',
         revenue:       mine.some(s => s.revenue === 'O') ? 'O' : 'X',
         revenueAmt:    latest?.revenueAmt || '',
@@ -235,10 +256,10 @@ const DB = {
   getTodayNonSubmitters() {
     const participants = this.getParticipants();
     const submissions  = this.getSubmissions();
-    const today = new Date().toISOString().slice(0, 10);
+    const today = this.kstDateStr();
     const submitted = new Set(
       submissions
-        .filter(s => s.submittedAt && s.submittedAt.slice(0, 10) === today)
+        .filter(s => this.toKSTDate(s.submittedAt) === today)
         .map(s => s.nickname)
     );
     return participants
@@ -249,8 +270,20 @@ const DB = {
   // 오늘 제출한 참가자 목록
   getTodaySubmitters() {
     const submissions = this.getSubmissions();
-    const today = new Date().toISOString().slice(0, 10);
-    return submissions.filter(s => s.submittedAt && s.submittedAt.slice(0, 10) === today);
+    const today = this.kstDateStr();
+    return submissions.filter(s => this.toKSTDate(s.submittedAt) === today);
+  },
+
+  // ── KST 날짜 유틸 (UTC+9) ────────────────────────────────────
+  // date 객체 → KST 기준 'YYYY-MM-DD'
+  kstDateStr(date) {
+    const d = (date instanceof Date) ? date : new Date();
+    return new Date(d.getTime() + 9 * 3600000).toISOString().slice(0, 10);
+  },
+  // ISO 문자열(UTC 저장) → KST 기준 'YYYY-MM-DD'
+  toKSTDate(isoStr) {
+    if (!isoStr) return '';
+    return new Date(new Date(isoStr).getTime() + 9 * 3600000).toISOString().slice(0, 10);
   },
 
   // ── 개발용: 전체 초기화 ──────────────────────────────────────

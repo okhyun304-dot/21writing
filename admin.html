@@ -402,7 +402,10 @@
       <!-- 연결된 상태 -->
       <div id="sheets-connected-bar" style="display:none;gap:8px;align-items:center;flex-wrap:wrap;">
         <button onclick="syncFromSheets()" style="background:var(--panel2);border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:.76rem;padding:7px 14px;cursor:pointer;letter-spacing:1px;">
-          ↓ 최신 데이터 불러오기
+          ↓ 시트에서 불러오기
+        </button>
+        <button onclick="pushLocalToSheets()" style="background:var(--panel2);border:1px solid var(--brass);color:var(--brass2);font-family:var(--mono);font-size:.76rem;padding:7px 14px;cursor:pointer;letter-spacing:1px;">
+          ↑ 로컬 데이터 시트에 올리기
         </button>
         <span style="font-family:var(--mono);font-size:.72rem;color:var(--dim)" id="sheets-last-sync"></span>
         <a id="sheets-open-link" href="#" target="_blank"
@@ -501,7 +504,9 @@
 <script src="data.js"></script>
 <script>
 const ADMIN_PW = '0000';
-const todayStr = new Date().toISOString().slice(0,10);
+// KST(UTC+9) 기준 오늘 날짜
+const todayStr = new Date(new Date().getTime() + 9 * 3600000).toISOString().slice(0, 10);
+const toKSTDate = iso => iso ? new Date(new Date(iso).getTime() + 9 * 3600000).toISOString().slice(0, 10) : '';
 
 /* ── 잠금 ── */
 function unlock() {
@@ -577,9 +582,15 @@ async function pushLocalToSheets() {
   const submissions  = DB.getSubmissions();
   const hof          = DB.getHofData();
   const hofEntries   = Object.entries(hof);
+  const accessCode   = DB.getChallengeConfig().accessCode || '';
 
   const total = participants.length + submissions.length + hofEntries.length;
   if (total === 0) { alert('업로드할 데이터가 없습니다.'); return; }
+
+  if (!accessCode) {
+    alert('업로드 전에 참가 코드를 설정하고 저장하세요.\n(챌린지 설정 → 참가 코드 → 저장)');
+    return;
+  }
 
   if (!confirm(`로컬 데이터를 구글 시트에 업로드합니다.\n참가자 ${participants.length}명 / 제출 ${submissions.length}건 / HOF ${hofEntries.length}명\n\n※ 시트에 이미 같은 닉네임이 있으면 덮어씁니다.`)) return;
 
@@ -587,11 +598,11 @@ async function pushLocalToSheets() {
   if (btn) { btn.textContent = '업로드 중...'; btn.disabled = true; }
 
   try {
-    // 참가자 업로드
+    // 참가자 업로드 (accessCode 포함)
     for (const p of participants) {
       await fetch(DB.SHEETS_URL, {
         method: 'POST',
-        body: new URLSearchParams({ action: 'saveParticipant', data: JSON.stringify(p) })
+        body: new URLSearchParams({ action: 'saveParticipant', data: JSON.stringify({ ...p, accessCode }) })
       });
     }
     // 제출 업로드
@@ -675,7 +686,7 @@ function renderAll() {
 
   // 오늘 제출한 닉네임 목록
   const todaySet = new Set(
-    submissions.filter(s => (s.submittedAt||'').startsWith(todayStr)).map(s => s.nickname)
+    submissions.filter(s => toKSTDate(s.submittedAt) === todayStr).map(s => s.nickname)
   );
 
   // ── 통계 바 ──
@@ -697,7 +708,7 @@ function renderAll() {
 
   function todayRow(p, isDone) {
     if(isDone) {
-      const sub = submissions.filter(s => s.nickname === p.nickname && (s.submittedAt||'').startsWith(todayStr)).pop();
+      const sub = submissions.filter(s => s.nickname === p.nickname && toKSTDate(s.submittedAt) === todayStr).pop();
       return `<div class="today-person">
         <span class="today-name">${esc(p.nickname)}</span>
         <span class="today-level">${p.startLevel||'브론즈'}</span>

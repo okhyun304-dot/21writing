@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>일일 현황 — 21일 글쓰기</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #F7F7F6;
+      --surface:  #FFFFFF;
+      --surface-2:#F0F0EE;
+      --border:   #E3E2DE;
+      --border-2: #C8C7C0;
+
+      --text:   #18181A;
+      --text-2: #68676B;
+      --text-3: #A4A3A0;
+
+      --hof:        #5B21B6;
+      --hof-bg:     #FAF8FF;
+      --hof-border: #DDD6FE;
+
+      --gold:        #92400E;
+      --gold-bg:     #FDFAF4;
+      --gold-border: #E5D8A8;
+
+      --silver:        #1E3A8A;
+      --silver-bg:     #F5F8FF;
+      --silver-border: #BFCFE8;
+
+      --bronze:        #9A3412;
+      --bronze-bg:     #FDF7F4;
+      --bronze-border: #EDD0C0;
+
+      --green:        #14532D;
+      --green-bg:     #F3FBF5;
+      --green-border: #A7F3D0;
+
+      --red:        #991B1B;
+      --red-bg:     #FEF7F7;
+      --red-border: #FECACA;
+
+      --radius:    6px;
+      --radius-sm: 4px;
+      --font: 'Inter', 'Noto Sans KR', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      word-break: keep-all;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header-logo {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .header-logo .num { font-size: 1.05rem; font-weight: 800; color: var(--hof); }
+    .page-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-3);
+      padding-left: 16px;
+      border-left: 1px solid var(--border);
+    }
+
+    .header-right { display: flex; align-items: center; gap: 6px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: background .12s, color .12s;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .btn-ghost { color: var(--text-2); border-color: var(--border); background: transparent; }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--text); }
+    .btn-solid { color: #fff; background: var(--text); border-color: var(--text); }
+    .btn-solid:hover { background: #333; }
+
+    /* ── Date bar ── */
+    .date-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .date-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      color: var(--text-3);
+    }
+    .date-item .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .date-item.today .dot { background: var(--green); }
+    .date-item.yesterday .dot { background: var(--border-2); }
+    .date-item strong { color: var(--text-2); font-weight: 600; }
+    .date-sep { color: var(--border-2); font-size: 0.7rem; }
+
+    /* ── Content ── */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 24px 60px;
+    }
+
+    /* ── Section ── */
+    .section { margin-bottom: 28px; }
+
+    .sec-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .sec-head.today-sec  { border-bottom-color: var(--green); }
+    .sec-head.yest-sec   { border-bottom-color: var(--border-2); }
+    .sec-head.miss-sec   { border-bottom-color: var(--red); }
+
+    .sec-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .sec-dot.green { background: var(--green); }
+    .sec-dot.gray  { background: var(--border-2); }
+    .sec-dot.red   { background: var(--red); }
+
+    .sec-title { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+    .sec-date  { font-size: 0.74rem; color: var(--text-3); font-weight: 500; }
+    .sec-spacer { flex: 1; }
+    .sec-count {
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: var(--text-3);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .sec-count.red-count { color: var(--red); background: var(--red-bg); border-color: var(--red-border); }
+
+    /* ── Post table ── */
+    .post-table {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .post-row {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      transition: background .1s;
+      animation: fadeUp .2s ease both;
+    }
+    .post-row:last-child { border-bottom: none; }
+    .post-row:hover { background: var(--surface-2); }
+
+    /* 이름 컬럼 */
+    .pr-who {
+      padding: 11px 14px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .level-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .level-dot.hof    { background: var(--hof); }
+    .level-dot.gold   { background: var(--gold); }
+    .level-dot.silver { background: var(--silver); }
+    .level-dot.bronze { background: var(--bronze); }
+
+    .pr-nickname {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pr-nickname:hover { color: var(--hof); }
+    .pr-nickname-plain {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 글 컬럼 */
+    .pr-post {
+      padding: 11px 16px;
+      min-width: 0;
+      border-right: 1px solid var(--border);
+    }
+    .pr-post-link {
+      font-size: 0.84rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+    .pr-post-link:hover { color: var(--hof); text-decoration: underline; }
+    .pr-no-post {
+      font-size: 0.78rem;
+      color: var(--text-3);
+    }
+
+    /* 액션 컬럼 */
+    .pr-action {
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .pr-time {
+      font-size: 0.68rem;
+      color: var(--text-3);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .pr-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-2);
+      text-decoration: none;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      transition: all .12s;
+      white-space: nowrap;
+    }
+    .pr-btn:hover { background: var(--text); color: #fff; border-color: var(--text); }
+
+    /* ── 미제출 ── */
+    .miss-grid {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .miss-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      animation: fadeUp .2s ease both;
+    }
+    .miss-row:last-child { border-bottom: none; }
+    .miss-name {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .miss-level-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 20px;
+    }
+    .miss-level-badge.hof    { color: var(--hof);    background: var(--hof-bg);    border: 1px solid var(--hof-border); }
+    .miss-level-badge.gold   { color: var(--gold);   background: var(--gold-bg);   border: 1px solid var(--gold-border); }
+    .miss-level-badge.silver { color: var(--silver); background: var(--silver-bg); border: 1px solid var(--silver-border); }
+    .miss-level-badge.bronze { color: var(--bronze); background: var(--bronze-bg); border: 1px solid var(--bronze-border); }
+    .miss-spacer { flex: 1; }
+    .miss-blog {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .miss-blog:hover { color: var(--hof); text-decoration: underline; }
+
+    /* ── Empty ── */
+    .empty {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-3);
+    }
+    .empty-all-done {
+      background: var(--green-bg);
+      border-color: var(--green-border);
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    /* ── Progress summary ── */
+    .progress-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .progress-track {
+      flex: 1;
+      height: 4px;
+      background: var(--surface-2);
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 2px;
+      transition: width .8s cubic-bezier(.4,0,.2,1);
+    }
+    .progress-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-2);
+      white-space: nowrap;
+    }
+
+    #status-msg {
+      text-align: center;
+      padding: 60px 20px;
+      font-size: 0.8rem;
+      color: var(--text-3);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 0 14px; height: 48px; }
+      .date-bar { padding: 8px 14px; }
+      .content { padding: 16px 14px 60px; }
+      .post-row { grid-template-columns: auto 1fr; }
+      .pr-who { padding: 11px 10px; }
+      .pr-action { display: none; }
+      .pr-post { border-right: none; padding: 11px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="index.html" class="header-logo">
+      <span class="num">21</span>일 글쓰기
+    </a>
+    <span class="page-label">일일 현황</span>
+  </div>
+  <div class="header-right">
+    <a href="daily.html" class="btn btn-solid">오늘 제출</a>
+    <a href="index.html" class="btn btn-ghost">← 대시보드</a>
+  </div>
+</header>
+
+<div class="date-bar" id="date-bar">
+  <div class="date-item today">
+    <span class="dot"></span>
+    <span>오늘 <strong id="today-label">—</strong></span>
+  </div>
+  <span class="date-sep">/</span>
+  <div class="date-item yesterday">
+    <span class="dot"></span>
+    <span>어제 <strong id="yesterday-label">—</strong></span>
+  </div>
+</div>
+
+<div class="content">
+  <div id="status-msg">데이터 불러오는 중...</div>
+  <div id="main-content" style="display:none">
+
+    <!-- 제출 현황 바 -->
+    <div class="section">
+      <div class="progress-bar-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        <span class="progress-label" id="progress-label">0 / 0 제출</span>
+      </div>
+    </div>
+
+    <!-- 오늘 발행 -->
+    <div class="section" id="section-today">
+      <div class="sec-head today-sec">
+        <span class="sec-dot green"></span>
+        <span class="sec-title">오늘 발행</span>
+        <span class="sec-date" id="label-today"></span>
+        <div class="sec-spacer"></div>
+        <span class="sec-count" id="count-today">0건</span>
+      </div>
+      <div id="list-today"></div>
+    </div>
+
+    <!-- 어제 발행 (댓글 달기) -->
+    <div class="section" id="section-yesterday">
+      <div class="sec-head yest-sec">
+        <span class="sec-dot gray"></span>
+        <span class="sec-title">어제 발행</span>
+        <span class="sec-date" id="label-yesterday"></span>
+        <div class="sec-spacer"></div>
+        <span class="sec-count" id="count-yesterday">0건</span>
+      </div>
+      <div id="list-yesterday"></div>
+    </div>
+
+    <!-- 오늘 미제출 -->
+    <div class="section" id="section-missing">
+      <div class="sec-head miss-sec">
+        <span class="sec-dot red"></span>
+        <span class="sec-title">오늘 미제출</span>
+        <div class="sec-spacer"></div>
+        <span class="sec-count red-count" id="count-missing">0명</span>
+      </div>
+      <div id="list-missing"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+  const LEVEL_MAP = {
+    '명예의전당': 'hof',
+    '골드':       'gold',
+    '실버':       'silver',
+    '브론즈':     'bronze',
+  };
+
+  function fmtDate(d) {
+    return d.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
+  }
+  function fmtTime(isoStr) {
+    if(!isoStr) return '';
+    const d = new Date(isoStr);
+    return d.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+  }
+  function dateStr(d) {
+    // KST(UTC+9) 기준 날짜 반환
+    return new Date(d.getTime() + 9 * 3600000).toISOString().slice(0, 10);
+  }
+  function toKSTDate(isoStr) {
+    if (!isoStr) return '';
+    return new Date(new Date(isoStr).getTime() + 9 * 3600000).toISOString().slice(0, 10);
+  }
+
+  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  function levelDot(levelKey) {
+    return `<span class="level-dot ${levelKey}"></span>`;
+  }
+  function levelBadge(levelKey, levelLabel) {
+    return `<span class="miss-level-badge ${levelKey}">${esc(levelLabel)}</span>`;
+  }
+
+  function renderPostTable(submissions, participants) {
+    if(!submissions.length) return `<div class="empty">아직 없음</div>`;
+
+    const rows = submissions.map((s, i) => {
+      const p = participants.find(x => x.nickname === s.nickname);
+      const levelKey = LEVEL_MAP[s.level || p?.startLevel || '브론즈'] || 'bronze';
+      const levelLabel = s.level || p?.startLevel || '브론즈';
+      const blogUrl = p?.blogUrl || '';
+      const time = fmtTime(s.submittedAt);
+
+      const nicknameEl = blogUrl
+        ? `<a href="${esc(blogUrl)}" target="_blank" rel="noopener" class="pr-nickname">${esc(s.nickname)} ↗</a>`
+        : `<span class="pr-nickname-plain">${esc(s.nickname)}</span>`;
+
+      const postEl = s.postLink
+        ? `<a href="${esc(s.postLink)}" target="_blank" rel="noopener" class="pr-post-link">${esc(s.postTitle || s.postLink)}</a>`
+        : `<span class="pr-no-post">글 링크 없음</span>`;
+
+      const commentBtn = s.postLink
+        ? `<a href="${esc(s.postLink)}" target="_blank" rel="noopener" class="pr-btn">댓글 달기 →</a>`
+        : '';
+
+      return `
+      <div class="post-row" style="animation-delay:${i*.04}s">
+        <div class="pr-who">
+          ${levelDot(levelKey)}
+          ${nicknameEl}
+        </div>
+        <div class="pr-post">${postEl}</div>
+        <div class="pr-action">
+          ${time ? `<span class="pr-time">${time}</span>` : ''}
+          ${commentBtn}
+        </div>
+      </div>`;
+    });
+
+    return `<div class="post-table">${rows.join('')}</div>`;
+  }
+
+  function renderMissing(missing, participants) {
+    if(!missing.length) {
+      return `<div class="empty empty-all-done">✓ 모든 참가자가 오늘 제출 완료</div>`;
+    }
+
+    const rows = missing.map((m, i) => {
+      const p = participants.find(x => x.nickname === m.nickname);
+      const levelKey = LEVEL_MAP[m.level || '브론즈'] || 'bronze';
+      const blogUrl = p?.blogUrl || '';
+
+      const blogLink = blogUrl
+        ? `<a href="${esc(blogUrl)}" target="_blank" rel="noopener" class="miss-blog">블로그 →</a>`
+        : '';
+
+      return `
+      <div class="miss-row" style="animation-delay:${i*.04}s">
+        ${levelDot(levelKey)}
+        <span class="miss-name">${esc(m.nickname)}</span>
+        ${levelBadge(levelKey, m.level || '브론즈')}
+        <div class="miss-spacer"></div>
+        ${blogLink}
+      </div>`;
+    });
+
+    return `<div class="miss-grid">${rows.join('')}</div>`;
+  }
+
+  function render() {
+    const submissions  = DB.getSubmissions();
+    const participants = DB.getParticipants();
+
+    const now       = new Date();
+    const todayStr  = dateStr(now);
+    const yestDate  = new Date(now - 86400000);
+    const yestStr   = dateStr(yestDate);
+
+    // 날짜 레이블
+    document.getElementById('today-label').textContent     = fmtDate(now);
+    document.getElementById('yesterday-label').textContent = fmtDate(yestDate);
+    document.getElementById('label-today').textContent     = fmtDate(now);
+    document.getElementById('label-yesterday').textContent = fmtDate(yestDate);
+
+    // 오늘 / 어제 제출 분류
+    const todaySubs = submissions
+      .filter(s => toKSTDate(s.submittedAt) === todayStr)
+      .sort((a,b) => a.submittedAt > b.submittedAt ? -1 : 1); // 최신순
+
+    const yesterdaySubs = submissions
+      .filter(s => toKSTDate(s.submittedAt) === yestStr)
+      .sort((a,b) => a.submittedAt > b.submittedAt ? -1 : 1);
+
+    // 미제출
+    const submittedToday = new Set(todaySubs.map(s => s.nickname));
+    const missing = participants
+      .filter(p => !submittedToday.has(p.nickname))
+      .map(p => ({ nickname: p.nickname, level: p.startLevel || '브론즈' }));
+
+    // 진행 바
+    const total   = participants.length;
+    const done    = total - missing.length;
+    const pct     = total > 0 ? Math.round(done / total * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = `오늘 ${done} / ${total}명 제출 (${pct}%)`;
+
+    // 렌더
+    document.getElementById('count-today').textContent     = `${todaySubs.length}건`;
+    document.getElementById('count-yesterday').textContent = `${yesterdaySubs.length}건`;
+    document.getElementById('count-missing').textContent   = `${missing.length}명`;
+
+    document.getElementById('list-today').innerHTML     = renderPostTable(todaySubs, participants);
+    document.getElementById('list-yesterday').innerHTML = renderPostTable(yesterdaySubs, participants);
+    document.getElementById('list-missing').innerHTML   = renderMissing(missing, participants);
+
+    document.getElementById('status-msg').style.display   = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  }
+
+  // 샘플 데이터 (시트 미연동 시)
+  function injectSampleIfEmpty() {
+    const participants = DB.getParticipants();
+    const submissions  = DB.getSubmissions();
+    if(participants.length > 0 || submissions.length > 0) return;
+
+    // 샘플용 임시 localStorage 주입 (페이지 새로고침 시 사라짐)
+    const sampleParticipants = [
+      {nickname:'정문의',   blogUrl:'https://blog.naver.com/', startLevel:'골드'},
+      {nickname:'한공략',   blogUrl:'https://blog.naver.com/', startLevel:'골드'},
+      {nickname:'류머니',   blogUrl:'https://blog.naver.com/', startLevel:'골드'},
+      {nickname:'오트래픽', blogUrl:'https://blog.naver.com/', startLevel:'실버'},
+      {nickname:'강알고리즘',blogUrl:'https://blog.naver.com/',startLevel:'실버'},
+      {nickname:'임생존',   blogUrl:'https://blog.naver.com/', startLevel:'브론즈'},
+      {nickname:'송도전',   blogUrl:'https://blog.naver.com/', startLevel:'브론즈'},
+      {nickname:'권챌린지', blogUrl:'https://blog.naver.com/', startLevel:'브론즈'},
+    ];
+    const today = new Date();
+    const yesterday = new Date(today - 86400000);
+
+    const sampleSubs = [
+      {nickname:'정문의',    postTitle:'문의 전환율 높이는 글 마지막 문장', postLink:'https://example.com/1', submittedAt: new Date(today.setHours(8,12)).toISOString(),  todayComments:5, dailyViews:120},
+      {nickname:'한공략',    postTitle:'네이버 상위노출 공략 실전 후기',      postLink:'https://example.com/2', submittedAt: new Date(today.setHours(9,40)).toISOString(),  todayComments:3, dailyViews:85},
+      {nickname:'오트래픽',  postTitle:'조회수 1000 돌파한 날 기록',           postLink:'https://example.com/3', submittedAt: new Date(today.setHours(10,5)).toISOString(), todayComments:4, dailyViews:200},
+      {nickname:'강알고리즘',postTitle:'네이버가 좋아하는 글 패턴 분석',      postLink:'https://example.com/4', submittedAt: new Date(today.setHours(11,22)).toISOString(),todayComments:2, dailyViews:60},
+      {nickname:'임생존',    postTitle:'10일차 오늘도 씁니다',                 postLink:'https://example.com/5', submittedAt: new Date(today.setHours(14,8)).toISOString(), todayComments:1, dailyViews:30},
+      // 어제 제출
+      {nickname:'정문의',    postTitle:'블로그로 문의받는 구조 만들기',         postLink:'https://example.com/6', submittedAt: new Date(yesterday.setHours(8,30)).toISOString(), todayComments:6, dailyViews:150},
+      {nickname:'한공략',    postTitle:'검색 상위노출 7일 실험 결과',            postLink:'https://example.com/7', submittedAt: new Date(yesterday.setHours(9,15)).toISOString(), todayComments:4, dailyViews:92},
+      {nickname:'류머니',    postTitle:'계약까지 이어진 블로그 글의 구조',       postLink:'https://example.com/8', submittedAt: new Date(yesterday.setHours(10,0)).toISOString(),  todayComments:5, dailyViews:110},
+      {nickname:'오트래픽',  postTitle:'방문자 300명 돌파 비결',                 postLink:'https://example.com/9', submittedAt: new Date(yesterday.setHours(12,20)).toISOString(), todayComments:3, dailyViews:180},
+      {nickname:'강알고리즘',postTitle:'키워드 분석 없이 쓰는 방법',             postLink:'https://example.com/10',submittedAt: new Date(yesterday.setHours(13,45)).toISOString(), todayComments:2, dailyViews:55},
+      {nickname:'임생존',    postTitle:'9일차 솔직 후기',                        postLink:'https://example.com/11',submittedAt: new Date(yesterday.setHours(15,0)).toISOString(),  todayComments:1, dailyViews:28},
+      {nickname:'송도전',    postTitle:'6일차 지금 뭐가 문제인지 알겠다',        postLink:'https://example.com/12',submittedAt: new Date(yesterday.setHours(16,30)).toISOString(), todayComments:1, dailyViews:22},
+    ];
+
+    localStorage.setItem('participants', JSON.stringify(sampleParticipants));
+    localStorage.setItem('submissions',  JSON.stringify(sampleSubs));
+  }
+
+  async function main() {
+    injectSampleIfEmpty();
+
+    // localStorage로 즉시 렌더 (딜레이 없음)
+    render();
+
+    // 시트 연동 시 백그라운드 동기화 후 재렌더
+    if(DB.isConnected()) {
+      try {
+        const ok = await DB.pullFromSheets();
+        if(ok) render();
+      } catch(e) { /* 로컬 데이터 유지 */ }
+    }
+  }
+
+  main();
+  // 1분마다 자동 갱신
+  setInterval(main, 60*1000);
+</script>
+</body>
+</html>
