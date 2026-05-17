@@ -43,11 +43,11 @@ const DB = {
       if (d.spreadsheetUrl) localStorage.setItem('spreadsheetUrl', d.spreadsheetUrl);
 
       // 참가자
-      if (Array.isArray(d.participants) && d.participants.length) {
+      if (Array.isArray(d.participants)) {
         localStorage.setItem('participants', JSON.stringify(d.participants));
       }
       // 제출
-      if (Array.isArray(d.submissions) && d.submissions.length) {
+      if (Array.isArray(d.submissions)) {
         localStorage.setItem('submissions', JSON.stringify(d.submissions));
       }
       // HOF — 배열을 {name: {...}} 형태로 변환해서 저장
@@ -278,12 +278,12 @@ const DB = {
   // date 객체 → KST 기준 'YYYY-MM-DD'
   kstDateStr(date) {
     const d = (date instanceof Date) ? date : new Date();
-    return new Date(d.getTime() + 9 * 3600000).toISOString().slice(0, 10);
+    return new Date(d.getTime() + 4 * 3600000).toISOString().slice(0, 10);
   },
-  // ISO 문자열(UTC 저장) → KST 기준 'YYYY-MM-DD'
+  // ISO 문자열(UTC 저장) → KST 새벽5시 기준 'YYYY-MM-DD'
   toKSTDate(isoStr) {
     if (!isoStr) return '';
-    return new Date(new Date(isoStr).getTime() + 9 * 3600000).toISOString().slice(0, 10);
+    return new Date(new Date(isoStr).getTime() + 4 * 3600000).toISOString().slice(0, 10);
   },
 
   // ── 개발용: 전체 초기화 ──────────────────────────────────────

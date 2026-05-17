@@ -505,8 +505,8 @@
 <script>
 const ADMIN_PW = '0000';
 // KST(UTC+9) 기준 오늘 날짜
-const todayStr = new Date(new Date().getTime() + 9 * 3600000).toISOString().slice(0, 10);
-const toKSTDate = iso => iso ? new Date(new Date(iso).getTime() + 9 * 3600000).toISOString().slice(0, 10) : '';
+const todayStr = new Date(new Date().getTime() + 4 * 3600000).toISOString().slice(0, 10);
+const toKSTDate = iso => iso ? new Date(new Date(iso).getTime() + 4 * 3600000).toISOString().slice(0, 10) : '';
 
 /* ── 잠금 ── */
 function unlock() {
@@ -1042,10 +1042,10 @@ function toggleDetail(idx) {
 /* ── 참가자 삭제 ── */
 function deleteParticipant(nickname) {
   if(!confirm(`"${nickname}" 참가자를 삭제할까요?\n해당 참가자의 제출 기록도 함께 삭제됩니다.`)) return;
-  const participants = DB.getParticipants().filter(p => p.nickname !== nickname);
-  const submissions  = DB.getSubmissions().filter(s => s.nickname !== nickname);
-  localStorage.setItem('participants', JSON.stringify(participants));
+  DB.deleteParticipant(nickname);
+  const submissions = DB.getSubmissions().filter(s => s.nickname !== nickname);
   localStorage.setItem('submissions', JSON.stringify(submissions));
+  DB._post('deleteSubmission', { nickname, date: 'all' });
   renderAll();
 }
 

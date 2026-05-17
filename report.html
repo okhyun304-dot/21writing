@@ -461,7 +461,7 @@
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    delete data.statsCapture; // 파일은 텍스트 저장 불가, 제외
+    delete data.statsCapture;
 
     DB.saveReport(data);
 

@@ -178,7 +178,10 @@ function doPost(e) {
           let rowDate = '';
           try {
             const rowAt = values[i][atIdx];
-            if (rowAt) rowDate = Utilities.formatDate(new Date(rowAt.toString()), 'Asia/Seoul', 'yyyy-MM-dd');
+            if (rowAt) {
+              const d = (rowAt instanceof Date) ? rowAt : new Date(rowAt);
+              rowDate = Utilities.formatDate(d, 'Asia/Seoul', 'yyyy-MM-dd');
+            }
           } catch(e) {}
           if (String(values[i][nickIdx]) === String(data.nickname) && rowDate === todayKST) {
             const row = HEADERS['submissions'].map(h => data[h] !== undefined ? data[h] : '');
@@ -208,6 +211,30 @@ function doPost(e) {
 
     if (action === 'deleteHof') {
       deleteRow('hof', 'name', data.name);
+      return corsOutput({ status: 'ok' });
+    }
+
+    if (action === 'deleteSubmission') {
+      const sheet  = getSheet('submissions');
+      const values = sheet.getDataRange().getValues();
+      if (values.length > 1) {
+        const headers = values[0];
+        const nickIdx = headers.indexOf('nickname');
+        const atIdx   = headers.indexOf('submittedAt');
+        for (let i = values.length - 1; i >= 1; i--) {
+          let rowDate = '';
+          try {
+            const rowAt = values[i][atIdx];
+            if (rowAt) {
+              const d = (rowAt instanceof Date) ? rowAt : new Date(rowAt);
+              rowDate = Utilities.formatDate(d, 'Asia/Seoul', 'yyyy-MM-dd');
+            }
+          } catch(e) {}
+          if (String(values[i][nickIdx]) === String(data.nickname) && rowDate === data.date) {
+            sheet.deleteRow(i + 1);
+          }
+        }
+      }
       return corsOutput({ status: 'ok' });
     }
 

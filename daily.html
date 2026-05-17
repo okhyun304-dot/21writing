@@ -235,8 +235,25 @@
       font-size: 0.82rem;
       color: #1E40AF;
       line-height: 1.6;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
-    .already-bar.show { display: block; }
+    .already-bar.show { display: flex; }
+    .cancel-sub-btn {
+      font-family: var(--font);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--red);
+      background: transparent;
+      border: 1px solid var(--red);
+      border-radius: var(--radius-sm);
+      padding: 5px 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .cancel-sub-btn:hover { background: #FEF2F2; }
     .already-bar strong { font-weight: 700; }
 
     @media (max-width: 600px) {
@@ -260,8 +277,9 @@
   <div class="page-sub">오늘의 활동을 기록하세요 · <span class="accent" id="today-date"></span></div>
 
   <div id="already-bar" class="already-bar">
-    📝 <strong>오늘 이미 제출한 기록이 있습니다.</strong><br>
-    수정 후 다시 제출하면 기록이 업데이트됩니다.
+    <div>📝 <strong>오늘 이미 제출한 기록이 있습니다.</strong><br>
+    수정 후 다시 제출하면 기록이 업데이트됩니다.</div>
+    <button class="cancel-sub-btn" onclick="cancelSubmission()">제출 취소</button>
   </div>
 
   <div class="form-wrap">
@@ -484,6 +502,27 @@
       }
     }
   })();
+
+  // ── 제출 취소 ───────────────────────────────────────────────────
+  function cancelSubmission() {
+    if (!confirm('오늘 제출한 기록을 삭제할까요?')) return;
+    const nickname = nicknameSelect.value;
+    if (!nickname) return;
+    const today = DB.kstDateStr();
+    const list = DB.getSubmissions().filter(s =>
+      !(s.nickname === nickname && DB.toKSTDate(s.submittedAt) === today)
+    );
+    localStorage.setItem('submissions', JSON.stringify(list));
+    DB._post('deleteSubmission', { nickname, date: today });
+    alreadyBar.classList.remove('show');
+    submitBtn.textContent = '제출하기';
+    form.reset();
+    nicknameSelect.value = nickname;
+    applyLevel(nickname);
+    setRadio('inquiry', 'X');
+    setRadio('revenue', 'X');
+    alert('제출이 취소되었습니다.');
+  }
 
   // ── 폼 제출 ────────────────────────────────────────────────────
   form.addEventListener('submit', e => {

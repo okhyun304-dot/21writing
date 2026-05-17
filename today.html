@@ -500,12 +500,12 @@
     return d.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
   }
   function dateStr(d) {
-    // KST(UTC+9) 기준 날짜 반환
-    return new Date(d.getTime() + 9 * 3600000).toISOString().slice(0, 10);
+    // 새벽 5시 기준 날짜 반환 (KST+9 - 5시간 = UTC+4)
+    return new Date(d.getTime() + 4 * 3600000).toISOString().slice(0, 10);
   }
   function toKSTDate(isoStr) {
     if (!isoStr) return '';
-    return new Date(new Date(isoStr).getTime() + 9 * 3600000).toISOString().slice(0, 10);
+    return new Date(new Date(isoStr).getTime() + 4 * 3600000).toISOString().slice(0, 10);
   }
 
   const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
