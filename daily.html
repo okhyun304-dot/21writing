@@ -528,6 +528,13 @@
   form.addEventListener('submit', e => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
+    // 오늘 기존 제출이 있으면 덮어씌우기 전에 확인
+    const today = DB.kstDateStr();
+    const subs  = DB.getSubmissions();
+    const hasExisting = subs.some(s => s.nickname === data.nickname && DB.toKSTDate(s.submittedAt) === today);
+    if (hasExisting) {
+      if (!confirm('오늘 이미 제출한 기록이 있습니다.\n기존 기록을 새 내용으로 덮어씌울까요?')) return;
+    }
     submitBtn.textContent = '저장 중...';
     submitBtn.disabled = true;
     DB.saveSubmission(data);

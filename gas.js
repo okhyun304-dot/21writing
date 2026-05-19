@@ -166,10 +166,10 @@ function doPost(e) {
     }
 
     if (action === 'saveSubmission') {
-      // KST 기준 오늘 날짜로 같은 닉네임 행이 있으면 대체 (upsert)
+      // 새벽5시 기준(UTC+4) 오늘 날짜로 같은 닉네임 행이 있으면 대체 (upsert)
       const sheet    = getSheet('submissions');
       const values   = sheet.getDataRange().getValues();
-      const todayKST = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd');
+      const todayUTC4 = Utilities.formatDate(new Date(new Date().getTime() + 4*60*60*1000), 'UTC', 'yyyy-MM-dd');
       if (values.length > 1) {
         const headers = values[0];
         const nickIdx = headers.indexOf('nickname');
@@ -180,10 +180,10 @@ function doPost(e) {
             const rowAt = values[i][atIdx];
             if (rowAt) {
               const d = (rowAt instanceof Date) ? rowAt : new Date(rowAt);
-              rowDate = Utilities.formatDate(d, 'Asia/Seoul', 'yyyy-MM-dd');
+              rowDate = Utilities.formatDate(new Date(d.getTime() + 4*60*60*1000), 'UTC', 'yyyy-MM-dd');
             }
           } catch(e) {}
-          if (String(values[i][nickIdx]) === String(data.nickname) && rowDate === todayKST) {
+          if (String(values[i][nickIdx]) === String(data.nickname) && rowDate === todayUTC4) {
             const row = HEADERS['submissions'].map(h => data[h] !== undefined ? data[h] : '');
             sheet.getRange(i + 1, 1, 1, row.length).setValues([row]);
             return corsOutput({ status: 'ok' });
@@ -227,7 +227,7 @@ function doPost(e) {
             const rowAt = values[i][atIdx];
             if (rowAt) {
               const d = (rowAt instanceof Date) ? rowAt : new Date(rowAt);
-              rowDate = Utilities.formatDate(d, 'Asia/Seoul', 'yyyy-MM-dd');
+              rowDate = Utilities.formatDate(new Date(d.getTime() + 4*60*60*1000), 'UTC', 'yyyy-MM-dd');
             }
           } catch(e) {}
           if (String(values[i][nickIdx]) === String(data.nickname) && rowDate === data.date) {
