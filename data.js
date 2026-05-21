@@ -117,14 +117,8 @@ const DB = {
 
   saveSubmission(data) {
     const list  = this.getSubmissions();
-    const today = this.kstDateStr();
     const entry = { ...data, submittedAt: new Date().toISOString() };
-    // 오늘 같은 닉네임 제출이 있으면 대체, 없으면 추가
-    const idx = list.findIndex(s =>
-      s.nickname === data.nickname && this.toKSTDate(s.submittedAt) === today
-    );
-    if (idx >= 0) list[idx] = entry;
-    else          list.push(entry);
+    list.push(entry);
     localStorage.setItem('submissions', JSON.stringify(list));
     this._post('saveSubmission', entry);
   },

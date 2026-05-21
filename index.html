@@ -625,6 +625,7 @@
       white-space: nowrap;
     }
 
+
     @media (max-width: 640px) {
       header { padding: 0 14px; height: 48px; }
       .live-ts { display: none; }
@@ -650,6 +651,7 @@
       /* warn-bar 모바일 */
       .warn-bar { padding: 10px 14px; }
       .warn-names { width: 100%; text-align: center; }
+
 
       /* 일일 현황 서브헤더 날짜 숨기기 */
       .daily-sub .sec-date { display: none; }
@@ -687,6 +689,11 @@
   <span class="warn-label">⚠ 오늘 미제출</span>
   <span id="nosubmit-count" class="warn-count"></span>
   <span id="nosubmit-names" class="warn-names"></span>
+</div>
+<div id="yest-nosubmit-bar" class="warn-bar" style="display:none; background:#FFFBF2; border-bottom-color:#FDE68A;">
+  <span class="warn-label" style="color:#92400E;">📋 어제 미제출</span>
+  <span id="yest-nosubmit-count" class="warn-count" style="color:#92400E; background:#FEF3C7; border-color:#FDE68A;"></span>
+  <span id="yest-nosubmit-names" class="warn-names"></span>
 </div>
 
 <div class="content">
@@ -992,6 +999,7 @@ function section(label, labelCls, sub, rows){
   </div>`;
 }
 
+
 function render(rows){
   const g          = group(rows);
   const hofCount   = rows.filter(r=>(r[COL.level]||'').trim()==='명예의전당').length;
@@ -1033,6 +1041,21 @@ function render(rows){
     nsBar.style.display='flex';
   } else {
     nsBar.style.display='none';
+  }
+
+  // 어제 미제출
+  const allParts   = DB.getParticipants();
+  const allSubs    = DB.getSubmissions();
+  const yestStr2   = DB.kstDateStr(new Date(new Date() - 86400000));
+  const yestSubSet = new Set(allSubs.filter(s=>DB.toKSTDate(s.submittedAt)===yestStr2).map(s=>s.nickname));
+  const yestNonSubs = allParts.filter(p=>!yestSubSet.has(p.nickname));
+  const ynBar = document.getElementById('yest-nosubmit-bar');
+  if(yestNonSubs.length>0){
+    document.getElementById('yest-nosubmit-count').textContent=`${yestNonSubs.length}명`;
+    document.getElementById('yest-nosubmit-names').textContent=yestNonSubs.map(p=>p.nickname).join(' · ');
+    ynBar.style.display='flex';
+  } else {
+    ynBar.style.display='none';
   }
 
   const now = new Date();

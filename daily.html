@@ -256,6 +256,54 @@
     .cancel-sub-btn:hover { background: #FEF2F2; }
     .already-bar strong { font-weight: 700; }
 
+    /* ── 과거 제출 수정 ── */
+    .past-subs-toggle {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); cursor: pointer; font-family: var(--font);
+      font-size: 0.8rem; font-weight: 600; color: var(--text-2); transition: background .12s;
+    }
+    .past-subs-toggle:hover { background: var(--surface-2); }
+    .past-subs-toggle.open { border-radius: var(--radius) var(--radius) 0 0; }
+    .past-subs-body {
+      display: none; border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius); background: var(--surface); overflow: hidden;
+    }
+    .past-subs-body.open { display: block; }
+    .psub-row { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+    .psub-row:last-child { border-bottom: none; }
+    .psub-info { display: flex; align-items: center; gap: 8px; }
+    .psub-date { font-size: 0.72rem; color: var(--text-3); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+    .psub-title { font-size: 0.82rem; color: var(--text); font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .psub-link-ic { font-size: 0.72rem; color: var(--text-3); text-decoration: none; flex-shrink: 0; }
+    .psub-link-ic:hover { color: var(--hof); }
+    .psub-edit-btn {
+      font-family: var(--font); font-size: 0.72rem; font-weight: 600;
+      color: var(--text-2); background: transparent; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 3px 10px; cursor: pointer; flex-shrink: 0;
+    }
+    .psub-edit-btn:hover { background: var(--surface-2); }
+    .psub-edit-area { display: none; flex-direction: column; gap: 6px; margin-top: 8px; }
+    .psub-edit-area.show { display: flex; }
+    .psub-edit-area input {
+      width: 100%; background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text); font-family: var(--font);
+      font-size: 0.88rem; padding: 7px 10px; outline: none;
+    }
+    .psub-edit-area input:focus { border-color: var(--hof); background: var(--surface); }
+    .psub-edit-actions { display: flex; gap: 6px; }
+    .psub-save-btn {
+      font-family: var(--font); font-size: 0.78rem; font-weight: 700;
+      color: #fff; background: var(--text); border: none;
+      border-radius: var(--radius-sm); padding: 6px 14px; cursor: pointer;
+    }
+    .psub-save-btn:hover { background: #333; }
+    .psub-cancel-btn {
+      font-family: var(--font); font-size: 0.78rem; font-weight: 600;
+      color: var(--text-2); background: transparent; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 6px 12px; cursor: pointer;
+    }
+
     @media (max-width: 600px) {
       header { padding: 0 14px; height: 48px; }
       .container { margin: 20px auto; padding: 0 14px; }
@@ -277,9 +325,17 @@
   <div class="page-sub">오늘의 활동을 기록하세요 · <span class="accent" id="today-date"></span></div>
 
   <div id="already-bar" class="already-bar">
-    <div>📝 <strong>오늘 이미 제출한 기록이 있습니다.</strong><br>
-    수정 후 다시 제출하면 기록이 업데이트됩니다.</div>
-    <button class="cancel-sub-btn" onclick="cancelSubmission()">제출 취소</button>
+    <div>📝 오늘 이미 <strong><span id="already-count">1</span>번</strong> 제출했습니다.<br>
+    다시 제출하면 새 글로 추가됩니다.</div>
+    <button class="cancel-sub-btn" onclick="cancelSubmission()">최근 취소</button>
+  </div>
+
+  <div id="past-subs-wrap" style="display:none; margin-bottom:12px;">
+    <button class="past-subs-toggle" id="past-subs-toggle-btn" onclick="togglePastSubs()">
+      <span id="past-subs-label">📋 내 제출 기록 수정</span>
+      <span id="past-subs-arrow" style="font-size:0.68rem;">▼</span>
+    </button>
+    <div class="past-subs-body" id="past-subs-body"></div>
   </div>
 
   <div class="form-wrap">
@@ -434,26 +490,15 @@
 
   // 오늘 기존 제출 확인 및 폼 채우기
   function checkExistingSubmission(nickname) {
-    if (!nickname) { alreadyBar.classList.remove('show'); submitBtn.textContent = '제출하기'; return; }
-    const subs  = DB.getSubmissions();
-    const today = DB.kstDateStr();
-    const existing = subs.find(s => s.nickname === nickname && DB.toKSTDate(s.submittedAt) === today);
-    if (existing) {
+    if (!nickname) { alreadyBar.classList.remove('show'); return; }
+    const subs      = DB.getSubmissions();
+    const today     = DB.kstDateStr();
+    const todaySubs = subs.filter(s => s.nickname === nickname && DB.toKSTDate(s.submittedAt) === today);
+    if (todaySubs.length > 0) {
       alreadyBar.classList.add('show');
-      submitBtn.textContent = '기록 수정';
-      // 폼 자동 채우기
-      const f = form.elements;
-      if (f.postTitle)     f.postTitle.value     = existing.postTitle     || '';
-      if (f.postLink)      f.postLink.value      = existing.postLink      || '';
-      if (f.todayComments) f.todayComments.value = existing.todayComments || '';
-      if (f.dailyViews)    f.dailyViews.value    = existing.dailyViews    || '';
-      if (f.revenueAmt)    f.revenueAmt.value    = existing.revenueAmt    || '';
-      if (f.memo)          f.memo.value          = existing.memo          || '';
-      setRadio('inquiry', existing.inquiry || 'X');
-      setRadio('revenue', existing.revenue || 'X');
+      document.getElementById('already-count').textContent = todaySubs.length;
     } else {
       alreadyBar.classList.remove('show');
-      submitBtn.textContent = '제출하기';
     }
   }
 
@@ -483,11 +528,13 @@
     nicknameSelect.value = last.nickname;
     applyLevel(last.nickname);
     checkExistingSubmission(last.nickname);
+    buildPastSubs(last.nickname);
   }
 
   nicknameSelect.addEventListener('change', () => {
     applyLevel(nicknameSelect.value);
     checkExistingSubmission(nicknameSelect.value);
+    buildPastSubs(nicknameSelect.value);
   });
 
   // ── 백그라운드 시트 동기화 ──────────────────────────────────────
@@ -499,29 +546,104 @@
       if (nicknameSelect.value) {
         applyLevel(nicknameSelect.value);
         checkExistingSubmission(nicknameSelect.value);
+        buildPastSubs(nicknameSelect.value);
       }
     }
   })();
 
+  // ── 유틸 ────────────────────────────────────────────────────────
+  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  // ── 과거 제출 수정 ───────────────────────────────────────────────
+  function buildPastSubs(nickname) {
+    const wrap = document.getElementById('past-subs-wrap');
+    if (!nickname) { wrap.style.display = 'none'; return; }
+    const subs = DB.getSubmissions()
+      .filter(s => s.nickname === nickname)
+      .sort((a, b) => (a.submittedAt > b.submittedAt ? -1 : 1));
+    if (!subs.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    document.getElementById('past-subs-label').textContent = `📋 내 제출 기록 수정 (${subs.length}건)`;
+    document.getElementById('past-subs-body').innerHTML = subs.map(s => {
+      const date  = DB.toKSTDate(s.submittedAt);
+      const safeAt = s.submittedAt.replace(/[^0-9]/g, '');
+      const title = s.postTitle || '(제목 없음)';
+      return `
+      <div class="psub-row">
+        <div class="psub-info">
+          <span class="psub-date">${esc(date)}</span>
+          <span class="psub-title">${esc(title)}</span>
+          ${s.postLink ? `<a href="${esc(s.postLink)}" target="_blank" class="psub-link-ic">↗</a>` : ''}
+          <button class="psub-edit-btn" onclick="openEditPastSub('${safeAt}')">수정</button>
+        </div>
+        <div class="psub-edit-area" id="psub-edit-${safeAt}">
+          <input id="psub-t-${safeAt}" value="${esc(s.postTitle||'')}" placeholder="글 제목" />
+          <input id="psub-l-${safeAt}" value="${esc(s.postLink||'')}" placeholder="https://..." />
+          <div class="psub-edit-actions">
+            <button class="psub-save-btn" onclick="savePastSub('${safeAt}','${s.submittedAt}')">저장</button>
+            <button class="psub-cancel-btn" onclick="closeEditPastSub('${safeAt}')">취소</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function togglePastSubs() {
+    const body  = document.getElementById('past-subs-body');
+    const btn   = document.getElementById('past-subs-toggle-btn');
+    const arrow = document.getElementById('past-subs-arrow');
+    const open  = body.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    arrow.textContent = open ? '▲' : '▼';
+  }
+
+  function openEditPastSub(safeDate) {
+    document.getElementById(`psub-edit-${safeDate}`).classList.add('show');
+  }
+
+  function closeEditPastSub(safeDate) {
+    document.getElementById(`psub-edit-${safeDate}`).classList.remove('show');
+  }
+
+  function savePastSub(safeAt, submittedAt) {
+    const nickname = nicknameSelect.value;
+    const newTitle = document.getElementById(`psub-t-${safeAt}`).value.trim();
+    const newLink  = document.getElementById(`psub-l-${safeAt}`).value.trim();
+    if (!newLink) { alert('글 링크를 입력하세요'); return; }
+    const list = DB.getSubmissions();
+    const idx  = list.findIndex(s => s.nickname === nickname && s.submittedAt === submittedAt);
+    if (idx >= 0) {
+      list[idx].postTitle = newTitle;
+      list[idx].postLink  = newLink;
+      localStorage.setItem('submissions', JSON.stringify(list));
+      DB._post('updateSubmission', { nickname, submittedAt, postTitle: newTitle, postLink: newLink });
+      buildPastSubs(nickname);
+      alert('수정되었습니다.');
+    }
+  }
+
   // ── 제출 취소 ───────────────────────────────────────────────────
   function cancelSubmission() {
-    if (!confirm('오늘 제출한 기록을 삭제할까요?')) return;
+    if (!confirm('오늘 가장 최근 제출 기록을 삭제할까요?')) return;
     const nickname = nicknameSelect.value;
     if (!nickname) return;
     const today = DB.kstDateStr();
-    const list = DB.getSubmissions().filter(s =>
-      !(s.nickname === nickname && DB.toKSTDate(s.submittedAt) === today)
-    );
+    const list  = DB.getSubmissions();
+    // 오늘 제출 중 가장 최신 것 찾기
+    let latestIdx = -1, latestAt = '';
+    list.forEach((s, i) => {
+      if (s.nickname === nickname && DB.toKSTDate(s.submittedAt) === today) {
+        if (!latestAt || s.submittedAt > latestAt) { latestAt = s.submittedAt; latestIdx = i; }
+      }
+    });
+    if (latestIdx < 0) return;
+    const deletedAt = list[latestIdx].submittedAt;
+    list.splice(latestIdx, 1);
     localStorage.setItem('submissions', JSON.stringify(list));
-    DB._post('deleteSubmission', { nickname, date: today });
-    alreadyBar.classList.remove('show');
-    submitBtn.textContent = '제출하기';
-    form.reset();
-    nicknameSelect.value = nickname;
-    applyLevel(nickname);
-    setRadio('inquiry', 'X');
-    setRadio('revenue', 'X');
-    alert('제출이 취소되었습니다.');
+    DB._post('deleteSubmission', { nickname, submittedAt: deletedAt });
+    checkExistingSubmission(nickname);
+    buildPastSubs(nickname);
+    alert('최근 제출이 취소되었습니다.');
   }
 
   // ── 폼 제출 ────────────────────────────────────────────────────
@@ -531,9 +653,9 @@
     // 오늘 기존 제출이 있으면 덮어씌우기 전에 확인
     const today = DB.kstDateStr();
     const subs  = DB.getSubmissions();
-    const hasExisting = subs.some(s => s.nickname === data.nickname && DB.toKSTDate(s.submittedAt) === today);
-    if (hasExisting) {
-      if (!confirm('오늘 이미 제출한 기록이 있습니다.\n기존 기록을 새 내용으로 덮어씌울까요?')) return;
+    const todaySubs = subs.filter(s => s.nickname === data.nickname && DB.toKSTDate(s.submittedAt) === today);
+    if (todaySubs.length > 0) {
+      if (!confirm(`오늘 이미 ${todaySubs.length}번 제출했습니다.\n새 글을 추가 제출할까요?`)) return;
     }
     submitBtn.textContent = '저장 중...';
     submitBtn.disabled = true;

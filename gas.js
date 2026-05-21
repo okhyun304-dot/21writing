@@ -166,30 +166,7 @@ function doPost(e) {
     }
 
     if (action === 'saveSubmission') {
-      // 새벽5시 기준(UTC+4) 오늘 날짜로 같은 닉네임 행이 있으면 대체 (upsert)
-      const sheet    = getSheet('submissions');
-      const values   = sheet.getDataRange().getValues();
-      const todayUTC4 = Utilities.formatDate(new Date(new Date().getTime() + 4*60*60*1000), 'UTC', 'yyyy-MM-dd');
-      if (values.length > 1) {
-        const headers = values[0];
-        const nickIdx = headers.indexOf('nickname');
-        const atIdx   = headers.indexOf('submittedAt');
-        for (let i = 1; i < values.length; i++) {
-          let rowDate = '';
-          try {
-            const rowAt = values[i][atIdx];
-            if (rowAt) {
-              const d = (rowAt instanceof Date) ? rowAt : new Date(rowAt);
-              rowDate = Utilities.formatDate(new Date(d.getTime() + 4*60*60*1000), 'UTC', 'yyyy-MM-dd');
-            }
-          } catch(e) {}
-          if (String(values[i][nickIdx]) === String(data.nickname) && rowDate === todayUTC4) {
-            const row = HEADERS['submissions'].map(h => data[h] !== undefined ? data[h] : '');
-            sheet.getRange(i + 1, 1, 1, row.length).setValues([row]);
-            return corsOutput({ status: 'ok' });
-          }
-        }
-      }
+      // 하루 여러 건 허용 — 무조건 추가
       appendRow('submissions', data);
       return corsOutput({ status: 'ok' });
     }
@@ -215,27 +192,52 @@ function doPost(e) {
     }
 
     if (action === 'deleteSubmission') {
+      // data.submittedAt 기준으로 정확히 일치하는 행 삭제
       const sheet  = getSheet('submissions');
       const values = sheet.getDataRange().getValues();
       if (values.length > 1) {
         const headers = values[0];
         const nickIdx = headers.indexOf('nickname');
         const atIdx   = headers.indexOf('submittedAt');
+        const targetMs = new Date(data.submittedAt).getTime();
         for (let i = values.length - 1; i >= 1; i--) {
-          let rowDate = '';
           try {
             const rowAt = values[i][atIdx];
-            if (rowAt) {
-              const d = (rowAt instanceof Date) ? rowAt : new Date(rowAt);
-              rowDate = Utilities.formatDate(new Date(d.getTime() + 4*60*60*1000), 'UTC', 'yyyy-MM-dd');
+            const rowMs = ((rowAt instanceof Date) ? rowAt : new Date(rowAt)).getTime();
+            if (String(values[i][nickIdx]) === String(data.nickname) && Math.abs(rowMs - targetMs) < 1000) {
+              sheet.deleteRow(i + 1);
+              break;
             }
           } catch(e) {}
-          if (String(values[i][nickIdx]) === String(data.nickname) && rowDate === data.date) {
-            sheet.deleteRow(i + 1);
-          }
         }
       }
       return corsOutput({ status: 'ok' });
+    }
+
+    if (action === 'updateSubmission') {
+      // data: { nickname, submittedAt, postTitle, postLink }
+      const sheet  = getSheet('submissions');
+      const values = sheet.getDataRange().getValues();
+      if (values.length > 1) {
+        const headers  = values[0];
+        const nickIdx  = headers.indexOf('nickname');
+        const atIdx    = headers.indexOf('submittedAt');
+        const titleIdx = headers.indexOf('postTitle');
+        const linkIdx  = headers.indexOf('postLink');
+        const targetMs = new Date(data.submittedAt).getTime();
+        for (let i = 1; i < values.length; i++) {
+          try {
+            const rowAt = values[i][atIdx];
+            const rowMs = ((rowAt instanceof Date) ? rowAt : new Date(rowAt)).getTime();
+            if (String(values[i][nickIdx]) === String(data.nickname) && Math.abs(rowMs - targetMs) < 1000) {
+              if (data.postTitle !== undefined) sheet.getRange(i+1, titleIdx+1).setValue(data.postTitle);
+              if (data.postLink  !== undefined) sheet.getRange(i+1, linkIdx+1).setValue(data.postLink);
+              return corsOutput({ status: 'ok' });
+            }
+          } catch(e) {}
+        }
+      }
+      return corsOutput({ status: 'error', message: '해당 제출 기록을 찾을 수 없습니다.' });
     }
 
     if (action === 'deleteParticipant') {
