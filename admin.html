@@ -487,6 +487,45 @@
     <div id="hof-list"></div>
   </div>
 
+  <!-- 텔레그램 알림 -->
+  <div class="adm-section">
+    <div class="adm-head">
+      <span class="adm-label" style="color:#2AABEE">📱 텔레그램 알림</span>
+      <div class="adm-rule"></div>
+      <span id="tg-status-badge" style="font-family:var(--mono);font-size:.72rem;padding:3px 8px;border:1px solid var(--line2);color:var(--dim)">미설정</span>
+    </div>
+    <div style="background:var(--panel);border:1px solid var(--line2);border-top:2px solid #2AABEE;padding:18px;">
+      <div style="margin-bottom:16px;padding:12px;background:var(--panel2);border-left:3px solid var(--brass);font-size:.84rem;color:var(--mid);line-height:1.8;">
+        <div style="font-family:var(--mono);font-size:.58rem;color:var(--brass2);letter-spacing:2px;margin-bottom:8px;">설정 방법</div>
+        <ol style="padding-left:16px;">
+          <li>텔레그램 <b style="color:var(--white)">@BotFather</b> → /newbot → 봇 토큰 받기</li>
+          <li>봇을 그룹에 초대 → 메시지 하나 보내기 → getUpdates로 채팅 ID 확인</li>
+          <li>아래 입력 후 저장 → 테스트 전송으로 확인</li>
+          <li>구글 앱스스크립트에서 <b style="color:var(--white)">createDailyTrigger()</b> 함수 한 번 실행</li>
+        </ol>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);letter-spacing:1px;margin-bottom:6px;">봇 토큰</div>
+          <input type="text" id="tg-token" placeholder="1234567890:ABCdef..."
+            style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.82rem;padding:9px 12px;outline:none;" />
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:.58rem;color:var(--dim);letter-spacing:1px;margin-bottom:6px;">채팅 ID</div>
+          <input type="text" id="tg-chatid" placeholder="-1001234567890"
+            style="width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--white);font-family:var(--mono);font-size:.82rem;padding:9px 12px;outline:none;" />
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <button onclick="saveTelegramConfig()"
+          style="background:#2AABEE;border:none;color:#000;font-family:var(--impact);font-size:.95rem;letter-spacing:2px;padding:9px 20px;cursor:pointer;">저장</button>
+        <button id="tg-test-btn" onclick="testTelegramSend()"
+          style="background:var(--panel2);border:1px solid #2AABEE;color:#2AABEE;font-family:var(--mono);font-size:.76rem;padding:9px 16px;cursor:pointer;letter-spacing:1px;">테스트 전송</button>
+        <span id="tg-msg" style="font-family:var(--mono);font-size:.76rem;color:var(--dim)"></span>
+      </div>
+    </div>
+  </div>
+
   <!-- 위험 구역 -->
   <div class="adm-section">
     <div class="adm-head">
@@ -667,6 +706,7 @@ function saveChallengeConfig() {
 /* ── 메인 렌더 ── */
 function renderAll() {
   initSheetsUI();
+  initTelegramUI();
 
   // 챌린지 설정 불러오기
   const cfg = DB.getChallengeConfig();
@@ -1079,6 +1119,66 @@ function resetAll() {
   if(!confirm('정말 전체 초기화할까요?\n참가자 및 제출 기록이 모두 삭제되며 되돌릴 수 없습니다.')) return;
   DB.reset();
   renderAll();
+}
+
+/* ── 텔레그램 설정 ── */
+function initTelegramUI() {
+  const token  = localStorage.getItem('telegramToken')  || '';
+  const chatId = localStorage.getItem('telegramChatId') || '';
+  if (token)  document.getElementById('tg-token').value  = token;
+  if (chatId) document.getElementById('tg-chatid').value = chatId;
+  const badge = document.getElementById('tg-status-badge');
+  if (token && chatId) {
+    badge.textContent    = '설정됨';
+    badge.style.color    = '#2AABEE';
+    badge.style.borderColor = '#2AABEE';
+  }
+}
+
+function saveTelegramConfig() {
+  const token  = document.getElementById('tg-token').value.trim();
+  const chatId = document.getElementById('tg-chatid').value.trim();
+  if (!token || !chatId) { alert('봇 토큰과 채팅 ID를 모두 입력하세요.'); return; }
+  localStorage.setItem('telegramToken',  token);
+  localStorage.setItem('telegramChatId', chatId);
+  DB._post('saveConfig', { telegramToken: token, telegramChatId: chatId });
+  const badge = document.getElementById('tg-status-badge');
+  badge.textContent    = '설정됨';
+  badge.style.color    = '#2AABEE';
+  badge.style.borderColor = '#2AABEE';
+  const msg = document.getElementById('tg-msg');
+  msg.textContent  = '✓ 저장됨';
+  msg.style.color  = 'var(--green)';
+  setTimeout(() => { msg.textContent = ''; }, 3000);
+}
+
+async function testTelegramSend() {
+  const token  = document.getElementById('tg-token').value.trim();
+  const chatId = document.getElementById('tg-chatid').value.trim();
+  if (!token || !chatId) { alert('먼저 봇 토큰과 채팅 ID를 입력하고 저장하세요.'); return; }
+  if (!DB.isConnected()) { alert('구글 시트가 연결되어 있지 않습니다.'); return; }
+  const btn = document.getElementById('tg-test-btn');
+  const msg = document.getElementById('tg-msg');
+  btn.textContent = '전송 중...'; btn.disabled = true;
+  try {
+    const res = await fetch(DB.SHEETS_URL, {
+      method: 'POST',
+      body: new URLSearchParams({ action: 'testTelegram', data: JSON.stringify({ token, chatId }) })
+    });
+    const d = await res.json();
+    if (d.status === 'ok') {
+      msg.textContent = '✓ 전송 완료! 텔레그램 확인하세요.';
+      msg.style.color = 'var(--green)';
+    } else {
+      msg.textContent = '❌ ' + (d.message || '실패');
+      msg.style.color = 'var(--red2)';
+    }
+  } catch(e) {
+    msg.textContent = '❌ 요청 실패: ' + e.message;
+    msg.style.color = 'var(--red2)';
+  }
+  btn.textContent = '테스트 전송'; btn.disabled = false;
+  setTimeout(() => { msg.textContent = ''; }, 5000);
 }
 
 /* ── 유틸 ── */
